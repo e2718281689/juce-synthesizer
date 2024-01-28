@@ -42,18 +42,25 @@ private:
     juce::Slider EnvSustain;
     juce::Slider EnvRelease;
 
+    juce::ToggleButton SineButton;
+    juce::ToggleButton SawButton;
+    juce::ToggleButton SquareButton;
+    juce::ToggleButton NoiseButton;
+
+
     Gui::AudioWaveform AudioWave;
 
     juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment xxxsliderAttachment;
-
     juce::AudioProcessorValueTreeState::SliderAttachment EnvAttackAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment EnvDecayAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment EnvSustainAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment EnvReleaseAttachment;
-
     juce::AudioProcessorValueTreeState::SliderAttachment EnvLevelAttachment;
 
-
+    juce::AudioProcessorValueTreeState::ButtonAttachment SineButtonAttachment;
+    juce::AudioProcessorValueTreeState::ButtonAttachment SawButtonAttachment;
+    juce::AudioProcessorValueTreeState::ButtonAttachment SquareButtonAttachment;
+    juce::AudioProcessorValueTreeState::ButtonAttachment NoiseButtonAttachment;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessorEditor)
 };

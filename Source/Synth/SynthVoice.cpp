@@ -44,8 +44,34 @@ void SynthVoice::getEnvAttack(float Attack, float Decay, float Sustain, float Re
     //juce::Logger::outputDebugString("index=" + juce::String(index) + "  Release=" + juce::String(Release));
 
 }
-
-
+void SynthVoice::getOsc(bool SineButton, bool SawButton, bool PhasorButton, bool NoiseButton, int index)
+{
+        Sinebool = SineButton;
+        Sawbool = SawButton;
+        Squarebool = PhasorButton;
+        Noisebool = NoiseButton;
+}
+double SynthVoice::OscOutput()
+{
+        double OutPut=0;
+        if (Sinebool == true)
+        {
+            OutPut += myOsc1.sinewave(frequency);
+        }
+        if (Sawbool == true)
+        {
+            OutPut += myOsc1.saw(frequency);
+        }
+        if (Squarebool == true)
+        {
+            OutPut += myOsc1.square(frequency);
+        }
+        if (Noisebool == true)
+        {
+            OutPut += myOsc1.noise();
+        }
+        return OutPut;
+}
 void SynthVoice::getLevel(float Level, int index)
 {
     userlevel = juce::Decibels::decibelsToGain(Level);
@@ -69,7 +95,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int s
     //juce::Logger::outputDebugString("renderNextBlock");
     for (auto sample = 0; sample < numSamples; ++sample)//将maxiOsc对象生成的音频数据逐样本地填充各个通道的到缓冲区
     {
-        auto myWave = myOsc1.square(frequency) * keylevel * userlevel;
+        auto myWave = OscOutput() * keylevel * userlevel;
         auto soundOfEnv = myEnv1.adsr(myWave, myEnv1.trigger);//对振荡器的音频信号应用包络
 
         for (auto channel = 0; channel < outputBuffer.getNumChannels(); ++channel)

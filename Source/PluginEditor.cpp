@@ -19,6 +19,10 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     , EnvSustainAttachment(audioProcessor.apvts, "EnvSustain", EnvSustain)
     , EnvReleaseAttachment(audioProcessor.apvts, "EnvRelease", EnvRelease)
     , EnvLevelAttachment(audioProcessor.apvts, "Envlevel", Envlevel)
+    , SineButtonAttachment(audioProcessor.apvts, "SineButton", SineButton)
+    , SawButtonAttachment(audioProcessor.apvts, "SawButton", SawButton)
+    , SquareButtonAttachment(audioProcessor.apvts, "SquareButton", SquareButton)
+    , NoiseButtonAttachment(audioProcessor.apvts, "NoiseButton", NoiseButton)
     , AudioWave(p)
 {
     // Make sure that before the constructor has finished, you've set the
@@ -37,9 +41,6 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     Envlevel.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
     Envlevel.setValue(0.5f);
 
-
-
-
     EnvAttack.setSliderStyle(juce::Slider::LinearVertical);
     EnvDecay.setSliderStyle(juce::Slider::LinearVertical);
     EnvSustain.setSliderStyle(juce::Slider::LinearVertical);
@@ -51,6 +52,11 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     EnvRelease.setRange(0, 1000);
 
 
+
+    SineButton.setButtonText("sine");
+    SawButton.setButtonText("Saw");
+    SquareButton.setButtonText("Square");
+    NoiseButton.setButtonText("Noise");
     //EnvAttack.setSliderStyle(juce::Slider::LinearBarVertical);
     //EnvAttack.setRange(0.0, 127.0, 1.0);
     //EnvAttack.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
@@ -68,6 +74,11 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(levelSlider);
     addAndMakeVisible(xxxSlider);
     addAndMakeVisible(AudioWave);
+
+    addAndMakeVisible(SineButton);
+    addAndMakeVisible(SawButton);
+    addAndMakeVisible(SquareButton);
+    addAndMakeVisible(NoiseButton);
 
     xxxSlider.addListener(this);
 
@@ -107,6 +118,10 @@ void ScscAudioProcessorEditor::resized()
 
     xxxSlider.setBounds(100, 50, getWidth() - 110, 20);
 
+    SineButton.setBounds(220,100,70,40);
+    SawButton.setBounds(220, 130, 70, 40);
+    SquareButton.setBounds(220, 160, 70, 40);
+    NoiseButton.setBounds(220, 190, 70, 40);
 
     EnvAttack.setBounds (400, 100, 20, 100);
     EnvDecay.setBounds  (450, 100, 20, 100);
@@ -115,6 +130,6 @@ void ScscAudioProcessorEditor::resized()
 
     Envlevel.setBounds(300, 100, 100, 100);
 
-    AudioWave.setBounds(50, 90, 200, 200);
+    AudioWave.setBounds(10, 90, 200, 200);
 
 }

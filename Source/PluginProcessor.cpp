@@ -211,6 +211,13 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
                                   apvts.getParameterAsValue("EnvSustain").getValue(),
                                   apvts.getParameterAsValue("EnvRelease").getValue(),
                                   i);
+
+            myVoice->getOsc(apvts.getParameterAsValue("SineButton").getValue(),
+                            apvts.getParameterAsValue("SawButton").getValue(),
+                            apvts.getParameterAsValue("SquareButton").getValue(),
+                            apvts.getParameterAsValue("NoiseButton").getValue(),
+                            i);
+
             myVoice->getLevel(apvts.getParameterAsValue("Envlevel").getValue(), i);
         }
     }
@@ -291,6 +298,27 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
         "Envlevel",
         juce::NormalisableRange<float>(-72.0f, 10.0f, 0.01f),
         1.0f));
+
+
+    parameterLayout.add(std::make_unique<juce::AudioParameterBool>(
+        "SineButton",
+        "SineButton",
+         false));
+
+    parameterLayout.add(std::make_unique<juce::AudioParameterBool>(
+        "SawButton",
+        "SawButton",
+        false));
+
+    parameterLayout.add(std::make_unique<juce::AudioParameterBool>(
+        "SquareButton",
+        "SquareButton",
+        false));
+
+    parameterLayout.add(std::make_unique<juce::AudioParameterBool>(
+        "NoiseButton",
+        "NoiseButton",
+        false));
 
     return parameterLayout;
 }

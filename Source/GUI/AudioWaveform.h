@@ -16,7 +16,7 @@ namespace Gui
 		AudioWaveform(ScscAudioProcessor& p): waveform(p.getSingleChannelSampleFifo())
 		{
 			pathBuffer.setSize(1, 1024);
-			startTimerHz(30);
+			startTimerHz(60);
 		}
 
 		void paint(juce::Graphics& g) override
