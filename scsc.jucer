@@ -65,6 +65,7 @@
         <FILE id="kctP80" name="AudioFIFO.h" compile="0" resource="0" file="Source/GUI/AudioFIFO.h"/>
         <FILE id="AOqLIQ" name="AudioWaveform.h" compile="0" resource="0" file="Source/GUI/AudioWaveform.h"/>
         <FILE id="NdcFpS" name="DecibelSlider.h" compile="0" resource="0" file="Source/GUI/DecibelSlider.h"/>
+        <FILE id="KH6a9s" name="xxxsider.h" compile="0" resource="0" file="Source/GUI/xxxsider.h"/>
       </GROUP>
       <FILE id="myO3Am" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

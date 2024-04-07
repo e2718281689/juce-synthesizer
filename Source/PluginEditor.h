@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "GUI/DecibelSlider.h"
 #include "GUI/AudioWaveform.h"
+#include "GUI/xxxsider.h"
 //==============================================================================
 /**
 */
@@ -47,7 +48,7 @@ private:
     juce::ToggleButton SquareButton;
     juce::ToggleButton NoiseButton;
 
-
+    
     Gui::AudioWaveform AudioWave;
 
     juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;

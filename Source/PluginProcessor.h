@@ -45,7 +45,7 @@ public:
 
     //==============================================================================
     const juce::String getName() const override;
-
+    void reset() override;
     bool acceptsMidi() const override;
     bool producesMidi() const override;
     bool isMidiEffect() const override;
@@ -61,6 +61,8 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    void ScscAudioProcessor::CabSimulator();
+
 
     SingleChannelSampleFifo<juce::AudioBuffer<float>>& getSingleChannelSampleFifo() { return singleChannelSampleFifo; }
 
@@ -75,5 +77,15 @@ private:
     juce::Synthesiser synth;
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
     SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo {1};
+
+    juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
+
+    enum
+    {
+        convolutionIndex 
+    };
+
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

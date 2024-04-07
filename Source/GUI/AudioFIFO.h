@@ -37,7 +37,7 @@ public:
         }
     }
 
-    bool push(const T& b)  //入栈
+    bool push(const T& b)  //脠毛脮禄
     {
         auto write = fifo.write(1);
         if (write.blockSize1 > 0)
@@ -49,7 +49,7 @@ public:
         return false;
     }
 
-    bool pop(T& b)  //出栈
+    bool pop(T& b)  //鲁枚脮禄
     {
         auto read = fifo.read(1);
         if (read.blockSize1 > 0)
@@ -61,27 +61,27 @@ public:
         return false;
     }
 
-    int getNumAvailableForReading() const //可用数
+    int getNumAvailableForReading() const //驴脡脫脙脢媒
     {
         return fifo.getNumReady();
     }
 
 private:
-    static const int Capacity{ 1024 };  //大小
-    std::array<T, Capacity> buffers;    //存储
-    juce::AbstractFifo fifo{ Capacity };//FIFO类只负责记录，不负责存储
+    static const int Capacity{ 1024 };  //麓贸脨隆
+    std::array<T, Capacity> buffers;    //麓忙麓垄
+    juce::AbstractFifo fifo{ Capacity };//FIFO脌脿脰禄赂潞脭冒录脟脗录拢卢虏禄赂潞脭冒麓忙麓垄
 };
 
 template<typename BlockType>
 class SingleChannelSampleFifo
 {
 public:
-    SingleChannelSampleFifo(int ch) : channelToUse(ch) // ch 使用的通道数
+    SingleChannelSampleFifo(int ch) : channelToUse(ch) // ch 脢鹿脫脙碌脛脥篓碌脌脢媒
     {
         prepared.set(false);
     }
 
-    void update(const BlockType& buffer) //更新数据
+    void update(const BlockType& buffer) //赂眉脨脗脢媒戮脻
     {
         bufferToFill = buffer;
         auto* channelPtr = buffer.getReadPointer(channelToUse);
@@ -92,7 +92,7 @@ public:
         }
     }
 
-    void prepare(int bufferSize)  //准备
+    void prepare(int bufferSize)  //脳录卤赂
     {
         prepared.set(false);
         size.set(bufferSize);
@@ -107,7 +107,7 @@ public:
         prepared.set(true);
     }
     //==============================================================================
-    int getNumCompleteBuffersAvailable() const { return audioBufferFifo.getNumAvailableForReading(); } // 还剩多少数据
+    int getNumCompleteBuffersAvailable() const { return audioBufferFifo.getNumAvailableForReading(); } // 禄鹿脢拢露脿脡脵脢媒戮脻
     bool isPrepared() const { return prepared.get(); }  // are you Prepared
     int getSize() const { return size.get(); } // get size 
     //==============================================================================
@@ -121,7 +121,7 @@ private:
     juce::Atomic<bool> prepared = false;
     juce::Atomic<int> size = 0;
 
-    void pushNextSampleIntoFifo(float sample) //把拿到的数据再传出去
+    void pushNextSampleIntoFifo(float sample) //掳脩脛脙碌陆碌脛脢媒戮脻脭脵麓芦鲁枚脠楼
     {
         if (fifoIndex == bufferToFill.getNumSamples())
         {

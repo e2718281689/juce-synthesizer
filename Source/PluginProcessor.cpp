@@ -31,7 +31,7 @@ ScscAudioProcessor::ScscAudioProcessor()
         synth.addSound(new SynthSound());
     }
 
-
+    CabSimulator();
 }
 
 ScscAudioProcessor::~ScscAudioProcessor()
@@ -107,6 +107,17 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     // initialisation that you need..
     synth.setCurrentPlaybackSampleRate(sampleRate);
     singleChannelSampleFifo.prepare(samplesPerBlock);
+
+
+
+    const auto channels = juce::jmax(getTotalNumInputChannels(), getTotalNumOutputChannels());
+
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = channels;
+
+    processorChain.prepare(spec);
 }
 
 void ScscAudioProcessor::releaseResources()
@@ -198,7 +209,7 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     //    buffer.addSample(0, sample, currentSample);
     //    buffer.addSample(1, sample, currentSample);
     //}
-
+   
 
 
     for (int i = 0; i < synth.getNumVoices(); i++)
@@ -224,6 +235,10 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
 
     buffer.clear();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
+    processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
+
     singleChannelSampleFifo.update(buffer);
 
 }
@@ -321,6 +336,31 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
         false));
 
     return parameterLayout;
+}
+
+void ScscAudioProcessor::reset()
+{
+    processorChain.reset();
+}
+
+void ScscAudioProcessor::CabSimulator()
+{
+
+
+    auto& convolution = processorChain.template get<convolutionIndex>();    // [5]
+    
+    juce::File impFile{ "E:\\vst_vs\\DSPConvolutionTutorial\\DSPConvolutionTutorial\\Resources\\guitar_amp.wav" };
+    if (!impFile.exists()) {
+        juce::Logger::outputDebugString("TestPluginAudioProcessor cons:: your impulse file does not exist " + impFile.getFullPathName());
+    }
+    else {
+        juce::Logger::outputDebugString("Ready to load impulse response! " + impFile.getFullPathName());
+    }
+
+    convolution.loadImpulseResponse(impFile,
+        juce::dsp::Convolution::Stereo::yes,
+        juce::dsp::Convolution::Trim::no,
+        1024);                                 // [6]
 }
 
 //==============================================================================

@@ -28,9 +28,9 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
 
-    levelSlider.setRange(-72, 10);//滑块取值范围
+    levelSlider.setRange(-72, 10);//禄卢驴茅脠隆脰碌路露脦搂
     levelSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
-    levelSlider.onValueChange = [this] { juce::Decibels::decibelsToGain((float)levelSlider.getValue()); };//可以当成回调函数
+    levelSlider.onValueChange = [this] { juce::Decibels::decibelsToGain((float)levelSlider.getValue()); };//驴脡脪脭碌卤鲁脡禄脴碌梅潞炉脢媒
 
 
     xxxSlider.setRange(-72, 10);
@@ -50,7 +50,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     EnvDecay.setRange(0, 1000);
     EnvSustain.setRange(0, 1);
     EnvRelease.setRange(0, 1000);
-
+    EnvAttack.getValue();
 
 
     SineButton.setButtonText("sine");
@@ -80,7 +80,6 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(SquareButton);
     addAndMakeVisible(NoiseButton);
 
-    xxxSlider.addListener(this);
 
     setSize(600, 300);
 }
@@ -99,10 +98,10 @@ void ScscAudioProcessorEditor::paint (juce::Graphics& g)
     //g.setFont (15.0f);
     //g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
     
-    //// 将整个窗口设置为白色
+    //// 陆芦脮没赂枚麓掳驴脷脡猫脰脙脦陋掳脳脡芦
     //g.fillAll(juce::Colours::white);
 
-    //// 将通用绘制色彩设置为黑色
+    //// 陆芦脥篓脫脙禄忙脰脝脡芦虏脢脡猫脰脙脦陋潞脷脡芦
     //g.setColour(juce::Colours::black);
 
 }

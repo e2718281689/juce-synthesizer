@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    DecibelSlider.h
-    Created: 25 Oct 2023 8:17:48pm
+    SourceCode.h
+    Created: 20 Mar 2024 2:38:09pm
     Author:  cjia
 
   ==============================================================================
@@ -11,10 +11,10 @@
 #pragma once
 #include <JuceHeader.h>
 
-class DecibelSlider : public juce::Slider
+class xxxSlider : public juce::Slider
 {
 public:
-    DecibelSlider() {}
+    xxxSlider() {}
 
     double getValueFromText(const juce::String& text) override
     {
@@ -30,7 +30,12 @@ public:
     {
         return juce::Decibels::toString(value);
     }
-    
+
+    double getValue() 
+    {
+        return 0;
+    }
+
 
 
 
