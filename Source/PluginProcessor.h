@@ -15,13 +15,15 @@
 #include "Synth/SynthSound.h"
 #include "Synth/SynthVoice.h"
 #include "GUI/AudioFIFO.h"
+
 //==============================================================================
 /**
 */
-class ScscAudioProcessor  : public juce::AudioProcessor
+class ScscAudioProcessor  : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
+
 
 {
 public:
@@ -63,10 +65,13 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     void ScscAudioProcessor::CabSimulator();
 
-
     SingleChannelSampleFifo<juce::AudioBuffer<float>>& getSingleChannelSampleFifo() { return singleChannelSampleFifo; }
-
     juce::AudioProcessorValueTreeState apvts;
+
+    void parameterChanged(const juce::String& parameterID, float newValue);
+
+
+    float EnvAttackTime, EnvDecayTime, EnvReleaseTime, EnvSustainTime;
 private:
     //==============================================================================
     double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.01;
@@ -80,12 +85,13 @@ private:
 
     juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
 
+    juce::dsp::Gain<float> GainProcessor;
+    juce::dsp::Panner<float> PanProcessor;
+
     enum
     {
         convolutionIndex 
     };
-
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

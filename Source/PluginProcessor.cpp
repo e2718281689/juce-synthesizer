@@ -24,6 +24,12 @@ ScscAudioProcessor::ScscAudioProcessor()
 {
     //juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", CreateParameters() };
 
+    apvts.addParameterListener("EnvAttack", this);
+    apvts.addParameterListener("EnvDecay", this);
+    apvts.addParameterListener("EnvSustain", this);
+    apvts.addParameterListener("EnvRelease", this);
+    
+
     synth.clearSounds();
     for (int i = 0; i < 5; i++)
     {
@@ -32,10 +38,17 @@ ScscAudioProcessor::ScscAudioProcessor()
     }
 
     CabSimulator();
+
+
+
 }
 
 ScscAudioProcessor::~ScscAudioProcessor()
 {
+    apvts.removeParameterListener("EnvAttack", this);
+    apvts.removeParameterListener("EnvDecay", this);
+    apvts.removeParameterListener("EnvSustain", this);
+    apvts.removeParameterListener("EnvRelease", this);
 }
 
 //==============================================================================
@@ -108,8 +121,6 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     synth.setCurrentPlaybackSampleRate(sampleRate);
     singleChannelSampleFifo.prepare(samplesPerBlock);
 
-
-
     const auto channels = juce::jmax(getTotalNumInputChannels(), getTotalNumOutputChannels());
 
     juce::dsp::ProcessSpec spec;
@@ -118,6 +129,15 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     spec.numChannels = channels;
 
     processorChain.prepare(spec);
+
+    GainProcessor.prepare(spec);
+    PanProcessor.prepare(spec);
+
+
+    EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
+    EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
+    EnvSustainTime = apvts.getParameterAsValue("EnvSustain").getValue();
+    EnvReleaseTime = apvts.getParameterAsValue("EnvRelease").getValue();
 }
 
 void ScscAudioProcessor::releaseResources()
@@ -217,11 +237,7 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
         if ((myVoice = dynamic_cast<SynthVoice*>(synth.getVoice(i))))
         {
             //juce::Logger::outputDebugString("xxx=" + juce::String((double)apvts.getParameterAsValue("EnvAttack").getValue()));
-            myVoice->getEnvAttack(apvts.getParameterAsValue("EnvAttack").getValue(),
-                                  apvts.getParameterAsValue("EnvDecay").getValue(),
-                                  apvts.getParameterAsValue("EnvSustain").getValue(),
-                                  apvts.getParameterAsValue("EnvRelease").getValue(),
-                                  i);
+            myVoice->getEnvAttack(EnvAttackTime, EnvDecayTime, EnvSustainTime, EnvReleaseTime, i);
 
             myVoice->getOsc(apvts.getParameterAsValue("SineButton").getValue(),
                             apvts.getParameterAsValue("SawButton").getValue(),
@@ -236,8 +252,9 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     buffer.clear();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-    auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
-    processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
+    //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
+    //processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
+
 
     singleChannelSampleFifo.update(buffer);
 
@@ -341,6 +358,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
 void ScscAudioProcessor::reset()
 {
     processorChain.reset();
+
+    PanProcessor.reset();
+    GainProcessor.reset();
 }
 
 void ScscAudioProcessor::CabSimulator()
@@ -361,6 +381,44 @@ void ScscAudioProcessor::CabSimulator()
         juce::dsp::Convolution::Stereo::yes,
         juce::dsp::Convolution::Trim::no,
         1024);                                 // [6]
+}
+
+void ScscAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+
+    if (parameterID.equalsIgnoreCase("EnvAttack"))
+    {
+        //EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
+        EnvAttackTime = newValue;
+    }
+
+
+    if (parameterID.equalsIgnoreCase("EnvDecay"))
+    {
+        //EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
+        EnvDecayTime = newValue;
+    }
+
+
+    if (parameterID.equalsIgnoreCase("EnvRelease"))
+    {
+        //EnvReleaseTime = apvts.getParameterAsValue("EnvRelease").getValue();
+        EnvReleaseTime = newValue;
+    }
+
+
+    if (parameterID.equalsIgnoreCase("EnvSustain"))
+    {
+        //EnvSustainTime = apvts.getParameterAsValue("EnvSustain").getValue();
+        EnvSustainTime = newValue;
+    }
+
+
+
+    juce::Logger::outputDebugString("EnvAttackTime=" + juce::String(EnvAttackTime));
+    juce::Logger::outputDebugString("EnvDecayTime=" + juce::String(EnvDecayTime));
+    juce::Logger::outputDebugString("EnvReleaseTime=" + juce::String(EnvReleaseTime));
+    juce::Logger::outputDebugString("EnvSustainTime=" + juce::String(EnvSustainTime));
 }
 
 //==============================================================================

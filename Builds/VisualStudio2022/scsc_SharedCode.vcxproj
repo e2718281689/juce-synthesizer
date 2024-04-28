@@ -2548,6 +2548,8 @@
     <ClInclude Include="..\..\Source\GUI\AudioFIFO.h"/>
     <ClInclude Include="..\..\Source\GUI\AudioWaveform.h"/>
     <ClInclude Include="..\..\Source\GUI\DecibelSlider.h"/>
+    <ClInclude Include="..\..\Source\GUI\EnvWaveform.h"/>
+    <ClInclude Include="..\..\Source\GUI\FftWaveform.h"/>
     <ClInclude Include="..\..\Source\GUI\xxxsider.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>

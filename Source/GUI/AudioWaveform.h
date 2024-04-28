@@ -12,11 +12,13 @@ namespace Gui
 		juce::AudioBuffer<float> pathBuffer;
 		PathProducer<juce::Path> pathProducer;
 		juce::Path waveformPath;
-
+		float length = 200;
+		float height = 200;
 		AudioWaveform(ScscAudioProcessor& p): waveform(p.getSingleChannelSampleFifo())
 		{
 			pathBuffer.setSize(1, 1024);
 			startTimerHz(60);
+
 		}
 
 		void paint(juce::Graphics& g) override
@@ -33,7 +35,6 @@ namespace Gui
 		{
 			//waveformPath.clear();
 			generateWaveform();
-
 		}
 
 		void generateWaveform()
@@ -52,12 +53,17 @@ namespace Gui
 					//	tempIncomingBuffer.getReadPointer(0, 0),
 					//	size);
 					//pathProducer.generatePath(pathBuffer, getLocalBounds().toFloat());
+					auto xxx = tempIncomingBuffer.getSample(1, 0);
+					auto yyy = 0;
+					xxx = juce::jmap<float>(xxx, -1, 1, 0, 200);
+					yyy = juce::jmap<float>(yyy, 0, 1024, 0, 200);
+					waveformPath.startNewSubPath(0, xxx);
 					for (auto a = 1; a < size; ++a)
 					{
 						auto xxx = tempIncomingBuffer.getSample(1, a);
 						auto yyy = a;
-						xxx=juce::jmap<float>(xxx, -1, 1, 0, 200);
-						yyy=juce::jmap<float>(yyy, 0, 1024, 0, 200);
+						xxx=juce::jmap<float>(xxx, -1, 1, 0, height);
+						yyy=juce::jmap<float>(yyy, 0, 1024, 0, length);
 						waveformPath.lineTo(a, xxx);
 					}
 					repaint();

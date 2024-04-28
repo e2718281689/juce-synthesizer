@@ -3297,6 +3297,12 @@
     <ClInclude Include="..\..\Source\GUI\DecibelSlider.h">
       <Filter>scsc\Source\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\EnvWaveform.h">
+      <Filter>scsc\Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\FftWaveform.h">
+      <Filter>scsc\Source\GUI</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\GUI\xxxsider.h">
       <Filter>scsc\Source\GUI</Filter>
     </ClInclude>

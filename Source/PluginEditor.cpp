@@ -24,6 +24,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     , SquareButtonAttachment(audioProcessor.apvts, "SquareButton", SquareButton)
     , NoiseButtonAttachment(audioProcessor.apvts, "NoiseButton", NoiseButton)
     , AudioWave(p)
+    , EnvWave(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -74,6 +75,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(levelSlider);
     addAndMakeVisible(xxxSlider);
     addAndMakeVisible(AudioWave);
+    addAndMakeVisible(EnvWave);
 
     addAndMakeVisible(SineButton);
     addAndMakeVisible(SawButton);
@@ -81,7 +83,8 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(NoiseButton);
 
 
-    setSize(600, 300);
+    
+    setSize(600, 600);
 }
 
 ScscAudioProcessorEditor::~ScscAudioProcessorEditor()
@@ -91,19 +94,6 @@ ScscAudioProcessorEditor::~ScscAudioProcessorEditor()
 //==============================================================================
 void ScscAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    //g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    //g.setColour (juce::Colours::white);
-    //g.setFont (15.0f);
-    //g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
-    
-    //// ½«Õû¸ö´°¿ÚÉèÖÃÎª°×É«
-    //g.fillAll(juce::Colours::white);
-
-    //// ½«Í¨ÓÃ»æÖÆÉ«²ÊÉèÖÃÎªºÚÉ«
-    //g.setColour(juce::Colours::black);
-
 }
 void ScscAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
@@ -130,5 +120,7 @@ void ScscAudioProcessorEditor::resized()
     Envlevel.setBounds(300, 100, 100, 100);
 
     AudioWave.setBounds(10, 90, 200, 200);
+
+    EnvWave.setBounds(10, 300, 280, 200);
 
 }

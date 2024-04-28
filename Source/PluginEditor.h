@@ -13,6 +13,7 @@
 #include "GUI/DecibelSlider.h"
 #include "GUI/AudioWaveform.h"
 #include "GUI/xxxsider.h"
+#include "GUI/EnvWaveform.h"
 //==============================================================================
 /**
 */
@@ -50,6 +51,7 @@ private:
 
     
     Gui::AudioWaveform AudioWave;
+    Gui::EnvWaveform EnvWave;
 
     juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment xxxsliderAttachment;
