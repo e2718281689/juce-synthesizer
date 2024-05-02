@@ -53,7 +53,6 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     EnvRelease.setRange(0, 1000);
     EnvAttack.getValue();
 
-
     SineButton.setButtonText("sine");
     SawButton.setButtonText("Saw");
     SquareButton.setButtonText("Square");
