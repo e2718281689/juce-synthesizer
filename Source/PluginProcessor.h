@@ -15,14 +15,14 @@
 #include "Synth/SynthSound.h"
 #include "Synth/SynthVoice.h"
 #include "GUI/AudioFIFO.h"
-
+#include "Effector/filter.h"
 //==============================================================================
 /**
 */
-class ScscAudioProcessor  : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
-                            #if JucePlugin_Enable_ARA
-                             , public juce::AudioProcessorARAExtension
-                            #endif
+class ScscAudioProcessor : public juce::AudioProcessor, public juce::AudioProcessorValueTreeState::Listener
+#if JucePlugin_Enable_ARA
+    , public juce::AudioProcessorARAExtension
+#endif
 
 
 {
@@ -32,14 +32,14 @@ public:
     ~ScscAudioProcessor() override;
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#ifndef JucePlugin_PreferredChannelConfigurations
+    bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
+#endif
 
-    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
@@ -56,13 +56,13 @@ public:
     //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const juce::String getProgramName (int index) override;
-    void changeProgramName (int index, const juce::String& newName) override;
+    void setCurrentProgram(int index) override;
+    const juce::String getProgramName(int index) override;
+    void changeProgramName(int index, const juce::String& newName) override;
 
     //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    void getStateInformation(juce::MemoryBlock& destData) override;
+    void setStateInformation(const void* data, int sizeInBytes) override;
     void ScscAudioProcessor::CabSimulator();
 
     SingleChannelSampleFifo<juce::AudioBuffer<float>>& getSingleChannelSampleFifo() { return singleChannelSampleFifo; }
@@ -70,8 +70,11 @@ public:
 
     void parameterChanged(const juce::String& parameterID, float newValue);
 
-
     float EnvAttackTime, EnvDecayTime, EnvReleaseTime, EnvSustainTime;
+
+    using AudioGraphIOProcessor = juce::AudioProcessorGraph::AudioGraphIOProcessor;
+    using Node = juce::AudioProcessorGraph::Node;
+
 private:
     //==============================================================================
     double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.01;
@@ -81,17 +84,21 @@ private:
     SynthVoice* myVoice;
     juce::Synthesiser synth;
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
-    SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo {1};
+    SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo{ 1 };
 
-    juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
-
-    juce::dsp::Gain<float> GainProcessor;
-    juce::dsp::Panner<float> PanProcessor;
+    std::unique_ptr<juce::AudioProcessorGraph> mainProcessor{ new juce::AudioProcessorGraph() };
 
     enum
     {
         convolutionIndex 
     };
+
+    Node::Ptr audioInputNode;
+    Node::Ptr audioOutputNode;
+    Node::Ptr midiInputNode;
+    Node::Ptr midiOutputNode;
+    Node::Ptr FilterNode;
+    std::vector<Node::Ptr* > audioNode;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

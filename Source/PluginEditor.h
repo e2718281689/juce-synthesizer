@@ -49,7 +49,6 @@ private:
     juce::ToggleButton SquareButton;
     juce::ToggleButton NoiseButton;
 
-    
     Gui::AudioWaveform AudioWave;
     Gui::EnvWaveform EnvWave;
 

@@ -123,16 +123,35 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     const auto channels = juce::jmax(getTotalNumInputChannels(), getTotalNumOutputChannels());
 
-    juce::dsp::ProcessSpec spec;
-    spec.sampleRate = sampleRate;
-    spec.maximumBlockSize = samplesPerBlock;
-    spec.numChannels = channels;
 
-    processorChain.prepare(spec);
 
-    GainProcessor.prepare(spec);
-    PanProcessor.prepare(spec);
+    mainProcessor->setPlayConfigDetails(getMainBusNumInputChannels(),
+                                        getMainBusNumOutputChannels(),
+                                        sampleRate, samplesPerBlock);
 
+    mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
+
+    mainProcessor->clear();
+    audioInputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioInputNode));
+    audioOutputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioOutputNode));
+    midiInputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiInputNode));
+    midiOutputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiOutputNode));
+
+    FilterNode = mainProcessor->addNode(std::make_unique < FilterProcessor > (&apvts));
+
+    for (int channel = 0; channel < 2; ++channel)
+    {
+        mainProcessor->addConnection({ { audioInputNode->nodeID,  channel },{ FilterNode->nodeID, channel } });
+        mainProcessor->addConnection({ { FilterNode->nodeID,  channel },{ audioOutputNode->nodeID, channel } });
+    }
+
+    mainProcessor->addConnection({ { midiInputNode->nodeID,  juce::AudioProcessorGraph::midiChannelIndex },
+                                       { midiOutputNode->nodeID, juce::AudioProcessorGraph::midiChannelIndex } });
+
+
+    audioNode.push_back(&audioInputNode);
+    audioNode.push_back(&FilterNode);
+    audioNode.push_back(&audioOutputNode);
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
     EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
@@ -144,6 +163,7 @@ void ScscAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    mainProcessor->releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -178,10 +198,10 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    auto aaa = apvts.getParameterAsValue("testslider");
-    double xxx = juce::Decibels::decibelsToGain((float)aaa.getValue());
-    auto bbb = apvts.getParameterAsValue("xxxtestslider");
-    double yyy = juce::Decibels::decibelsToGain((float)bbb.getValue());
+    //auto aaa = apvts.getParameterAsValue("testslider");
+    //double xxx = juce::Decibels::decibelsToGain((float)aaa.getValue());
+    //auto bbb = apvts.getParameterAsValue("xxxtestslider");
+    //double yyy = juce::Decibels::decibelsToGain((float)bbb.getValue());
     //juce::Logger::outputDebugString("xxx=" + juce::String(xxx));
     //juce::Logger::outputDebugString("yyy=" + juce::String(yyy));
 
@@ -255,9 +275,9 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
     //processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
 
+    mainProcessor->processBlock(buffer, midiMessages);
 
     singleChannelSampleFifo.update(buffer);
-
 }
 
 //==============================================================================
@@ -299,7 +319,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
         "xxxtestslider",
         "xxxtestslider",
         juce::NormalisableRange<float>(-72.0f, 10.0f, 0.01f),
-        1.0f));
+        1.0f)); 
 
     parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(
         "EnvAttack",
@@ -357,18 +377,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
 
 void ScscAudioProcessor::reset()
 {
-    processorChain.reset();
 
-    PanProcessor.reset();
-    GainProcessor.reset();
 }
 
 void ScscAudioProcessor::CabSimulator()
 {
-
-
-    auto& convolution = processorChain.template get<convolutionIndex>();    // [5]
-    
     juce::File impFile{ "E:\\vst_vs\\DSPConvolutionTutorial\\DSPConvolutionTutorial\\Resources\\guitar_amp.wav" };
     if (!impFile.exists()) {
         juce::Logger::outputDebugString("TestPluginAudioProcessor cons:: your impulse file does not exist " + impFile.getFullPathName());
@@ -376,11 +389,6 @@ void ScscAudioProcessor::CabSimulator()
     else {
         juce::Logger::outputDebugString("Ready to load impulse response! " + impFile.getFullPathName());
     }
-
-    convolution.loadImpulseResponse(impFile,
-        juce::dsp::Convolution::Stereo::yes,
-        juce::dsp::Convolution::Trim::no,
-        1024);                                 // [6]
 }
 
 void ScscAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
@@ -415,10 +423,10 @@ void ScscAudioProcessor::parameterChanged(const juce::String& parameterID, float
 
 
 
-    juce::Logger::outputDebugString("EnvAttackTime=" + juce::String(EnvAttackTime));
-    juce::Logger::outputDebugString("EnvDecayTime=" + juce::String(EnvDecayTime));
-    juce::Logger::outputDebugString("EnvReleaseTime=" + juce::String(EnvReleaseTime));
-    juce::Logger::outputDebugString("EnvSustainTime=" + juce::String(EnvSustainTime));
+    //juce::Logger::outputDebugString("EnvAttackTime=" + juce::String(EnvAttackTime));
+    //juce::Logger::outputDebugString("EnvDecayTime=" + juce::String(EnvDecayTime));
+    //juce::Logger::outputDebugString("EnvReleaseTime=" + juce::String(EnvReleaseTime));
+    //juce::Logger::outputDebugString("EnvSustainTime=" + juce::String(EnvSustainTime));
 }
 
 //==============================================================================
