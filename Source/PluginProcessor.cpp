@@ -29,7 +29,7 @@ ScscAudioProcessor::ScscAudioProcessor()
     apvts.addParameterListener("EnvSustain", this);
     apvts.addParameterListener("EnvRelease", this);
     
-
+    apvts.addParameterListener("levelSliderButton", this);
     synth.clearSounds();
     for (int i = 0; i < 5; i++)
     {
@@ -49,6 +49,7 @@ ScscAudioProcessor::~ScscAudioProcessor()
     apvts.removeParameterListener("EnvDecay", this);
     apvts.removeParameterListener("EnvSustain", this);
     apvts.removeParameterListener("EnvRelease", this);
+    apvts.removeParameterListener("levelSliderButton", this);
 }
 
 //==============================================================================
@@ -147,6 +148,9 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     mainProcessor->addConnection({ { midiInputNode->nodeID,  juce::AudioProcessorGraph::midiChannelIndex },
                                        { midiOutputNode->nodeID, juce::AudioProcessorGraph::midiChannelIndex } });
+
+
+
 
 
     audioNode.push_back(&audioInputNode);
@@ -250,7 +254,7 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     //    buffer.addSample(1, sample, currentSample);
     //}
    
-
+    //juce::Logger::outputDebugString("processBlock");
 
     for (int i = 0; i < synth.getNumVoices(); i++)
     {
@@ -372,6 +376,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
         "NoiseButton",
         false));
 
+    parameterLayout.add(std::make_unique<juce::AudioParameterBool>(
+        "levelSliderButton",
+        "levelSliderButton",
+        false));
+
     return parameterLayout;
 }
 
@@ -421,7 +430,24 @@ void ScscAudioProcessor::parameterChanged(const juce::String& parameterID, float
         EnvSustainTime = newValue;
     }
 
+    if (parameterID.equalsIgnoreCase("levelSliderButton"))
+    {
+        //juce::Logger::outputDebugString("levelSliderButton=" + juce::String(newValue));
+        ////EnvSustainTime = newValue;
+        if (newValue == 1)
+        {
 
+        }
+        else if (newValue == 0)
+        {
+            //for (auto connection : mainProcessor->getConnections())
+            //    mainProcessor->removeConnection(connection);
+            //mainProcessor->removeNode(FilterNode.get());
+            //for (int channel = 0; channel < 2; ++channel)
+            //    mainProcessor->addConnection({ { audioInputNode->nodeID,  channel },
+            //                                    { audioOutputNode->nodeID, channel } });
+        }
+    }
 
     //juce::Logger::outputDebugString("EnvAttackTime=" + juce::String(EnvAttackTime));
     //juce::Logger::outputDebugString("EnvDecayTime=" + juce::String(EnvDecayTime));

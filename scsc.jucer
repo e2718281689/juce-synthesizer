@@ -9,7 +9,11 @@
   <MAINGROUP id="DJeuaH" name="scsc">
     <GROUP id="{BE4E785A-2F1C-F9A1-687E-2A7921B1555A}" name="Source">
       <GROUP id="{6559A87D-4BD2-AEFB-F732-2A6F8761E280}" name="Effector">
+        <FILE id="yvHqEt" name="convolution.h" compile="0" resource="0" file="Source/Effector/convolution.h"/>
         <FILE id="b01JzK" name="filter.h" compile="0" resource="0" file="Source/Effector/filter.h"/>
+        <FILE id="YQWmck" name="ProcessorBase.h" compile="0" resource="0" file="Source/Effector/ProcessorBase.h"/>
+        <FILE id="b4wJjo" name="ProcessorGroup.h" compile="0" resource="0"
+              file="Source/Effector/ProcessorGroup.h"/>
       </GROUP>
       <GROUP id="{832CBA25-CA0B-4886-DA98-18B2261CC228}" name="Synth">
         <FILE id="dMj1gV" name="SynthSound.h" compile="0" resource="0" file="Source/Synth/SynthSound.h"/>

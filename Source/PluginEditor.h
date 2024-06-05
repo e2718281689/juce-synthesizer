@@ -36,6 +36,7 @@ private:
 
     DecibelSlider levelSlider;
     juce::Slider  xxxSlider;
+    juce::ToggleButton levelSliderButton;
 
     juce::Slider Envlevel;
 
@@ -64,5 +65,6 @@ private:
     juce::AudioProcessorValueTreeState::ButtonAttachment SawButtonAttachment;
     juce::AudioProcessorValueTreeState::ButtonAttachment SquareButtonAttachment;
     juce::AudioProcessorValueTreeState::ButtonAttachment NoiseButtonAttachment;
+    juce::AudioProcessorValueTreeState::ButtonAttachment levelSliderButtonAttachment;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessorEditor)
 };

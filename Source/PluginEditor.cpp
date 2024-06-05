@@ -23,6 +23,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     , SawButtonAttachment(audioProcessor.apvts, "SawButton", SawButton)
     , SquareButtonAttachment(audioProcessor.apvts, "SquareButton", SquareButton)
     , NoiseButtonAttachment(audioProcessor.apvts, "NoiseButton", NoiseButton)
+    , levelSliderButtonAttachment(audioProcessor.apvts, "levelSliderButton", levelSliderButton)
     , AudioWave(p)
     , EnvWave(p)
 {
@@ -57,6 +58,8 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     SawButton.setButtonText("Saw");
     SquareButton.setButtonText("Square");
     NoiseButton.setButtonText("Noise");
+
+    levelSliderButton.setButtonText("xxxSlider");
     //EnvAttack.setSliderStyle(juce::Slider::LinearBarVertical);
     //EnvAttack.setRange(0.0, 127.0, 1.0);
     //EnvAttack.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
@@ -82,6 +85,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(NoiseButton);
 
 
+    addAndMakeVisible(levelSliderButton);
     
     setSize(600, 600);
 }
@@ -110,6 +114,8 @@ void ScscAudioProcessorEditor::resized()
     SawButton.setBounds(220, 130, 70, 40);
     SquareButton.setBounds(220, 160, 70, 40);
     NoiseButton.setBounds(220, 190, 70, 40);
+
+    levelSliderButton.setBounds(10, 10, 60, 20);
 
     EnvAttack.setBounds (400, 100, 20, 100);
     EnvDecay.setBounds  (450, 100, 20, 100);

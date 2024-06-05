@@ -2526,7 +2526,10 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Effector\convolution.h"/>
     <ClInclude Include="..\..\Source\Effector\filter.h"/>
+    <ClInclude Include="..\..\Source\Effector\ProcessorBase.h"/>
+    <ClInclude Include="..\..\Source\Effector\ProcessorGroup.h"/>
     <ClInclude Include="..\..\Source\Synth\SynthSound.h"/>
     <ClInclude Include="..\..\Source\Synth\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\Maximilian\src\libs\PolyBLEP\PolyBLEP.h"/>

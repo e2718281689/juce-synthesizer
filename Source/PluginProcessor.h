@@ -100,5 +100,7 @@ private:
     Node::Ptr FilterNode;
     std::vector<Node::Ptr* > audioNode;
 
+    map<Node::Ptr, string> Effect_Chain;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

@@ -3234,7 +3234,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Effector\convolution.h">
+      <Filter>scsc\Source\Effector</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Effector\filter.h">
+      <Filter>scsc\Source\Effector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Effector\ProcessorBase.h">
+      <Filter>scsc\Source\Effector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Effector\ProcessorGroup.h">
       <Filter>scsc\Source\Effector</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Synth\SynthSound.h">
