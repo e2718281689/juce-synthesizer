@@ -16,6 +16,7 @@
 #include "Synth/SynthVoice.h"
 #include "GUI/AudioFIFO.h"
 #include "Effector/filter.h"
+#include "Effector/ProcessorGroup.h"
 //==============================================================================
 /**
 */
@@ -86,21 +87,14 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
     SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo{ 1 };
 
-    std::unique_ptr<juce::AudioProcessorGraph> mainProcessor{ new juce::AudioProcessorGraph() };
+    //std::unique_ptr<juce::AudioProcessorGraph> mainProcessor{ new juce::AudioProcessorGraph() };
 
+    std::unique_ptr<ProcessorGroup> mainProcessor{ new ProcessorGroup() };
     enum
     {
         convolutionIndex 
     };
 
-    Node::Ptr audioInputNode;
-    Node::Ptr audioOutputNode;
-    Node::Ptr midiInputNode;
-    Node::Ptr midiOutputNode;
     Node::Ptr FilterNode;
-    std::vector<Node::Ptr* > audioNode;
-
-    map<Node::Ptr, string> Effect_Chain;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

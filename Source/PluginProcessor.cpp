@@ -132,30 +132,8 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
 
-    mainProcessor->clear();
-    audioInputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioInputNode));
-    audioOutputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioOutputNode));
-    midiInputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiInputNode));
-    midiOutputNode = mainProcessor->addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::midiOutputNode));
-
-    FilterNode = mainProcessor->addNode(std::make_unique < FilterProcessor > (&apvts));
-
-    for (int channel = 0; channel < 2; ++channel)
-    {
-        mainProcessor->addConnection({ { audioInputNode->nodeID,  channel },{ FilterNode->nodeID, channel } });
-        mainProcessor->addConnection({ { FilterNode->nodeID,  channel },{ audioOutputNode->nodeID, channel } });
-    }
-
-    mainProcessor->addConnection({ { midiInputNode->nodeID,  juce::AudioProcessorGraph::midiChannelIndex },
-                                       { midiOutputNode->nodeID, juce::AudioProcessorGraph::midiChannelIndex } });
-
-
-
-
-
-    audioNode.push_back(&audioInputNode);
-    audioNode.push_back(&FilterNode);
-    audioNode.push_back(&audioOutputNode);
+    mainProcessor->AudioGroupInit();
+    FilterNode = mainProcessor->addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
     EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
