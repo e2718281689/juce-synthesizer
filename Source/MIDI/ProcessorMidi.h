@@ -18,7 +18,7 @@ class ProcessorMidi
 public:
 	//ProcessorMidi();
 	//~ProcessorMidi();
-    void ProcessorMidi::process(juce::MidiBuffer& midiMessages, juce::Synthesiser& v_synth);
+    void process(juce::MidiBuffer& midiMessages, juce::Synthesiser& v_synth);
 private:
     juce::HashMap<juce::String, void *> key_Voice;
     juce::HashMap<juce::String, void *> key_Sound;

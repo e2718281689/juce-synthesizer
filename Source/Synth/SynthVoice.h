@@ -25,7 +25,7 @@ public:
     void getEnvAttack(float Attack, float Decay, float Sustain, float Release, int index);
     void getOsc(bool SineButton, bool SawButton, bool PhasorButton, bool NoiseButton, int index);
     void getLevel(float Level,int index);
-    double SynthVoice::OscOutput();
+    double OscOutput();
 private:
     double frequency;
     double keylevel;

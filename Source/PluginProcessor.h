@@ -64,7 +64,7 @@ public:
     //==============================================================================
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
-    void ScscAudioProcessor::CabSimulator();
+    void CabSimulator();
 
     SingleChannelSampleFifo<juce::AudioBuffer<float>>& getSingleChannelSampleFifo() { return singleChannelSampleFifo; }
     juce::AudioProcessorValueTreeState apvts;
@@ -86,7 +86,7 @@ private:
     juce::Synthesiser synth;
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
     SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo{ 1 };
-
+    juce::dsp::DelayLine<float> modulatedAPF1{ 22050 };
     //std::unique_ptr<juce::AudioProcessorGraph> mainProcessor{ new juce::AudioProcessorGraph() };
 
     std::unique_ptr<ProcessorGroup> mainProcessor{ new ProcessorGroup() };
