@@ -366,3 +366,5 @@ FodyWeavers.xsd
 Build/
 /Builds/Android
 /Builds/VisualStudio2019
+/Builds/
+/cmake-build-debug/
