@@ -369,13 +369,13 @@ void ScscAudioProcessor::reset()
 
 void ScscAudioProcessor::CabSimulator()
 {
-    juce::File impFile{ "E:\\vst_vs\\DSPConvolutionTutorial\\DSPConvolutionTutorial\\Resources\\guitar_amp.wav" };
-    if (!impFile.exists()) {
-        juce::Logger::outputDebugString("TestPluginAudioProcessor cons:: your impulse file does not exist " + impFile.getFullPathName());
-    }
-    else {
-        juce::Logger::outputDebugString("Ready to load impulse response! " + impFile.getFullPathName());
-    }
+    // juce::File impFile{ "E:\\vst_vs\\DSPConvolutionTutorial\\DSPConvolutionTutorial\\Resources\\guitar_amp.wav" };
+    // if (!impFile.exists()) {
+    //     juce::Logger::outputDebugString("TestPluginAudioProcessor cons:: your impulse file does not exist " + impFile.getFullPathName());
+    // }
+    // else {
+    //     juce::Logger::outputDebugString("Ready to load impulse response! " + impFile.getFullPathName());
+    // }
 }
 
 void ScscAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)

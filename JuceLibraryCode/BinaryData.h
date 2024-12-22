@@ -9,16 +9,16 @@
 namespace BinaryData
 {
     extern const char*   README_md;
-    const int            README_mdSize = 1236;
+    const int            README_mdSize = 1213;
 
     extern const char*   developer_notes_md;
-    const int            developer_notes_mdSize = 1305;
+    const int            developer_notes_mdSize = 1259;
 
     extern const char*   LICENSE_txt;
-    const int            LICENSE_txtSize = 1060;
+    const int            LICENSE_txtSize = 1053;
 
     extern const char*   README_md2;
-    const int            README_md2Size = 4232;
+    const int            README_md2Size = 4118;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
     const int namedResourceListSize = 4;
