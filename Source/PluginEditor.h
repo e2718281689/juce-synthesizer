@@ -32,6 +32,10 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
+
+    using SliderVts = juce::AudioProcessorValueTreeState::SliderAttachment;
+    using ButtonVts = juce::AudioProcessorValueTreeState::ButtonAttachment;
+
     ScscAudioProcessor& audioProcessor;
 
     DecibelSlider levelSlider;
@@ -53,18 +57,20 @@ private:
     Gui::AudioWaveform AudioWave;
     Gui::EnvWaveform EnvWave;
 
-    juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;
-    juce::AudioProcessorValueTreeState::SliderAttachment xxxsliderAttachment;
-    juce::AudioProcessorValueTreeState::SliderAttachment EnvAttackAttachment;
-    juce::AudioProcessorValueTreeState::SliderAttachment EnvDecayAttachment;
-    juce::AudioProcessorValueTreeState::SliderAttachment EnvSustainAttachment;
-    juce::AudioProcessorValueTreeState::SliderAttachment EnvReleaseAttachment;
-    juce::AudioProcessorValueTreeState::SliderAttachment EnvLevelAttachment;
+    SliderVts sliderAttachment{ audioProcessor.apvts, "testslider", levelSlider };
+    SliderVts xxxsliderAttachment{ audioProcessor.apvts, "xxxtestslider", xxxSlider };
+    SliderVts EnvAttackAttachment{ audioProcessor.apvts, "EnvAttack", EnvAttack };
+    SliderVts EnvDecayAttachment{ audioProcessor.apvts, "EnvDecay", EnvDecay };
+    SliderVts EnvSustainAttachment{ audioProcessor.apvts, "EnvSustain", EnvSustain };
+    SliderVts EnvReleaseAttachment{ audioProcessor.apvts, "EnvRelease", EnvRelease };
+    SliderVts EnvLevelAttachment{ audioProcessor.apvts, "Envlevel", Envlevel };
 
-    juce::AudioProcessorValueTreeState::ButtonAttachment SineButtonAttachment;
-    juce::AudioProcessorValueTreeState::ButtonAttachment SawButtonAttachment;
-    juce::AudioProcessorValueTreeState::ButtonAttachment SquareButtonAttachment;
-    juce::AudioProcessorValueTreeState::ButtonAttachment NoiseButtonAttachment;
-    juce::AudioProcessorValueTreeState::ButtonAttachment levelSliderButtonAttachment;
+
+    ButtonVts SineButtonAttachment{ audioProcessor.apvts, "SineButton", SineButton };
+    ButtonVts SawButtonAttachment{ audioProcessor.apvts, "SawButton", SawButton };
+    ButtonVts SquareButtonAttachment{ audioProcessor.apvts, "SquareButton", SquareButton };
+    ButtonVts NoiseButtonAttachment{ audioProcessor.apvts, "NoiseButton", NoiseButton };
+    ButtonVts levelSliderButtonAttachment{ audioProcessor.apvts, "levelSliderButton", levelSliderButton };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessorEditor)
 };

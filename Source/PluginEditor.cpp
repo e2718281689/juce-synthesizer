@@ -12,18 +12,6 @@
 //==============================================================================
 ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
-    , sliderAttachment(audioProcessor.apvts,"testslider", levelSlider)
-    , xxxsliderAttachment(audioProcessor.apvts, "xxxtestslider", xxxSlider)
-    , EnvAttackAttachment(audioProcessor.apvts, "EnvAttack", EnvAttack)
-    , EnvDecayAttachment(audioProcessor.apvts, "EnvDecay", EnvDecay)
-    , EnvSustainAttachment(audioProcessor.apvts, "EnvSustain", EnvSustain)
-    , EnvReleaseAttachment(audioProcessor.apvts, "EnvRelease", EnvRelease)
-    , EnvLevelAttachment(audioProcessor.apvts, "Envlevel", Envlevel)
-    , SineButtonAttachment(audioProcessor.apvts, "SineButton", SineButton)
-    , SawButtonAttachment(audioProcessor.apvts, "SawButton", SawButton)
-    , SquareButtonAttachment(audioProcessor.apvts, "SquareButton", SquareButton)
-    , NoiseButtonAttachment(audioProcessor.apvts, "NoiseButton", NoiseButton)
-    , levelSliderButtonAttachment(audioProcessor.apvts, "levelSliderButton", levelSliderButton)
     , AudioWave(p)
     , EnvWave(p)
 {
