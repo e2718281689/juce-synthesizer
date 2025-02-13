@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="KsPiIQ" name="scsc" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="KsPiIQ" name="synthesizer" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginManufacturer="cjia" pluginFormats="buildStandalone,buildVST3"
               pluginVST3Category="Analyzer,Delay,Drum,EQ" pluginCharacteristicsValue="pluginWantsMidiIn"
               companyName="cjia" companyCopyright="cjia" companyWebsite="www.cjiax.top"
-              companyEmail="2132906379@qq.com">
-  <MAINGROUP id="DJeuaH" name="scsc">
+              companyEmail="2132906379@qq.com" bundleIdentifier="cjiax.top">
+  <MAINGROUP id="DJeuaH" name="synthesizer">
     <GROUP id="{BE4E785A-2F1C-F9A1-687E-2A7921B1555A}" name="Source">
       <GROUP id="{6559A87D-4BD2-AEFB-F732-2A6F8761E280}" name="Effector">
         <FILE id="yvHqEt" name="convolution.h" compile="0" resource="0" file="Source/Effector/convolution.h"/>
