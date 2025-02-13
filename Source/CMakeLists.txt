@@ -23,7 +23,9 @@
 
 # find_package(JUCE CONFIG REQUIRED)        # If you've installed JUCE to your system
 # or
-add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory called JUCE
+add_subdirectory(JUCE)# If you've put JUCE in a subdirectory called JUCE
+add_subdirectory(./RTNeural)
+
 
 # If you are building a VST2 or AAX plugin, CMake needs to be told where to find these SDKs on your
 # system. This setup should be done before calling `juce_add_plugin`.
@@ -56,7 +58,7 @@ juce_add_plugin(AudioPluginExample
         FORMATS VST3 Standalone
 )        # The name of the final executable, which can differ from the target name
 
-
+target_link_libraries(AudioPluginExample LINK_PUBLIC RTNeural)
 # `juce_generate_juce_header` will create a JuceHeader.h for a given target, which will be generated
 # into your build tree. This should be included with `#include <JuceHeader.h>`. The include path for
 # this header will be automatically added to the target. The main function of the JuceHeader is to
@@ -75,6 +77,7 @@ target_sources(AudioPluginExample
         PluginEditor.cpp
         PluginProcessor.cpp
         ./Synth/SynthVoice.cpp
+        ./Effector/deeplearn/RTGru.cpp
         ./Maximilian/src/maximilian.cpp
         ./MIDI/ProcessorMidi.cpp)
 

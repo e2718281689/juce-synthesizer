@@ -35,42 +35,6 @@ namespace BinaryData
     extern const char*   Makefile;
     const int            MakefileSize = 176;
 
-    extern const char*   CMakeLists_txt2;
-    const int            CMakeLists_txt2Size = 36;
-
-    extern const char*   test_net_json;
-    const int            test_net_jsonSize = 5993;
-
-    extern const char*   CMakeLists_txt3;
-    const int            CMakeLists_txt3Size = 32;
-
-    extern const char*   Makefile2;
-    const int            Makefile2Size = 507;
-
-    extern const char*   test_net_json2;
-    const int            test_net_json2Size = 10194;
-
-    extern const char*   CMakeLists_txt4;
-    const int            CMakeLists_txt4Size = 40;
-
-    extern const char*   CMakeLists_txt5;
-    const int            CMakeLists_txt5Size = 39;
-
-    extern const char*   test_net_json3;
-    const int            test_net_json3Size = 10194;
-
-    extern const char*   CMakeLists_txt6;
-    const int            CMakeLists_txt6Size = 96;
-
-    extern const char*   CMakeLists_txt7;
-    const int            CMakeLists_txt7Size = 27;
-
-    extern const char*   CMakeLists_txt8;
-    const int            CMakeLists_txt8Size = 1062;
-
-    extern const char*   README_md;
-    const int            README_mdSize = 511;
-
     extern const char*   bad_lstm_json;
     const int            bad_lstm_jsonSize = 63063;
 
@@ -113,8 +77,8 @@ namespace BinaryData
     extern const char*   CholmodSupport;
     const int            CholmodSupportSize = 1948;
 
-    extern const char*   CMakeLists_txt9;
-    const int            CMakeLists_txt9Size = 713;
+    extern const char*   CMakeLists_txt2;
+    const int            CMakeLists_txt2Size = 713;
 
     extern const char*   Core;
     const int            CoreSize = 13335;
@@ -200,59 +164,8 @@ namespace BinaryData
     extern const char*   UmfPackSupport;
     const int            UmfPackSupportSize = 1422;
 
-    extern const char*   CMakeLists_txt10;
-    const int            CMakeLists_txt10Size = 26571;
-
-    extern const char*   conv_png;
-    const int            conv_pngSize = 26722;
-
-    extern const char*   conv_py;
-    const int            conv_pySize = 2172;
-
-    extern const char*   conv1d_torch_py;
-    const int            conv1d_torch_pySize = 1259;
-
-    extern const char*   conv2d_py;
-    const int            conv2d_pySize = 1715;
-
-    extern const char*   dense_png;
-    const int            dense_pngSize = 18026;
-
-    extern const char*   dense_py;
-    const int            dense_pySize = 1444;
-
-    extern const char*   gru_png;
-    const int            gru_pngSize = 24161;
-
-    extern const char*   gru_py;
-    const int            gru_pySize = 1437;
-
-    extern const char*   gru_1d_png;
-    const int            gru_1d_pngSize = 29334;
-
-    extern const char*   gru_1d_py;
-    const int            gru_1d_pySize = 1296;
-
-    extern const char*   gru_torch_py;
-    const int            gru_torch_pySize = 1486;
-
-    extern const char*   lstm_png;
-    const int            lstm_pngSize = 27023;
-
-    extern const char*   lstm_py;
-    const int            lstm_pySize = 1298;
-
-    extern const char*   lstm_1d_png;
-    const int            lstm_1d_pngSize = 34432;
-
-    extern const char*   lstm_1d_py;
-    const int            lstm_1d_pySize = 1157;
-
-    extern const char*   lstm_torch_py;
-    const int            lstm_torch_pySize = 1492;
-
-    extern const char*   model_utils_py;
-    const int            model_utils_pySize = 4185;
+    extern const char*   CMakeLists_txt3;
+    const int            CMakeLists_txt3Size = 26571;
 
     extern const char*   batchnorm_tpp;
     const int            batchnorm_tppSize = 3439;
@@ -326,86 +239,23 @@ namespace BinaryData
     extern const char*   lstm_xsimd_tpp;
     const int            lstm_xsimd_tppSize = 8441;
 
-    extern const char*   README_md2;
-    const int            README_md2Size = 412;
+    extern const char*   README_md;
+    const int            README_mdSize = 412;
 
-    extern const char*   CMakeLists_txt11;
-    const int            CMakeLists_txt11Size = 1349;
+    extern const char*   CMakeLists_txt4;
+    const int            CMakeLists_txt4Size = 1349;
 
-    extern const char*   conv_x_python_csv;
-    const int            conv_x_python_csvSize = 2651;
-
-    extern const char*   conv_y_python_csv;
-    const int            conv_y_python_csvSize = 2600;
-
-    extern const char*   conv1d_torch_x_python_csv;
-    const int            conv1d_torch_x_python_csvSize = 26512;
-
-    extern const char*   conv1d_torch_y_python_csv;
-    const int            conv1d_torch_y_python_csvSize = 304784;
-
-    extern const char*   conv2d_x_python_csv;
-    const int            conv2d_x_python_csvSize = 30477;
-
-    extern const char*   conv2d_y_python_csv;
-    const int            conv2d_y_python_csvSize = 8424;
-
-    extern const char*   dense_x_python_csv;
-    const int            dense_x_python_csvSize = 2651;
-
-    extern const char*   dense_y_python_csv;
-    const int            dense_y_python_csvSize = 2700;
-
-    extern const char*   gru_1d_x_python_csv;
-    const int            gru_1d_x_python_csvSize = 2651;
-
-    extern const char*   gru_1d_y_python_csv;
-    const int            gru_1d_y_python_csvSize = 2700;
-
-    extern const char*   gru_torch_x_python_csv;
-    const int            gru_torch_x_python_csvSize = 26512;
-
-    extern const char*   gru_torch_y_python_csv;
-    const int            gru_torch_y_python_csvSize = 27000;
-
-    extern const char*   gru_x_python_csv;
-    const int            gru_x_python_csvSize = 2651;
-
-    extern const char*   gru_y_python_csv;
-    const int            gru_y_python_csvSize = 2700;
-
-    extern const char*   lstm_1d_x_python_csv;
-    const int            lstm_1d_x_python_csvSize = 2651;
-
-    extern const char*   lstm_1d_y_python_csv;
-    const int            lstm_1d_y_python_csvSize = 2686;
-
-    extern const char*   lstm_torch_x_python_csv;
-    const int            lstm_torch_x_python_csvSize = 26512;
-
-    extern const char*   lstm_torch_y_python_csv;
-    const int            lstm_torch_y_python_csvSize = 27000;
-
-    extern const char*   lstm_x_python_csv;
-    const int            lstm_x_python_csvSize = 2651;
-
-    extern const char*   lstm_y_python_csv;
-    const int            lstm_y_python_csvSize = 2648;
-
-    extern const char*   CMakeLists_txt12;
-    const int            CMakeLists_txt12Size = 667;
-
-    extern const char*   CMakeLists_txt13;
-    const int            CMakeLists_txt13Size = 726;
+    extern const char*   CMakeLists_txt5;
+    const int            CMakeLists_txt5Size = 726;
 
     extern const char*   LICENSE;
     const int            LICENSESize = 1553;
 
-    extern const char*   README_md3;
-    const int            README_md3Size = 12527;
+    extern const char*   README_md2;
+    const int            README_md2Size = 12527;
 
-    extern const char*   README_md4;
-    const int            README_md4Size = 1236;
+    extern const char*   README_md3;
+    const int            README_md3Size = 1236;
 
     extern const char*   developer_notes_md;
     const int            developer_notes_mdSize = 1305;
@@ -413,11 +263,11 @@ namespace BinaryData
     extern const char*   LICENSE_txt;
     const int            LICENSE_txtSize = 1060;
 
-    extern const char*   README_md5;
-    const int            README_md5Size = 4232;
+    extern const char*   README_md4;
+    const int            README_md4Size = 4232;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 136;
+    const int namedResourceListSize = 86;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

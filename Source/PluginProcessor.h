@@ -17,6 +17,7 @@
 #include "GUI/AudioFIFO.h"
 #include "Effector/filter.h"
 #include "Effector/ProcessorGroup.h"
+#include "Effector/deeplearn/RTGru.h"
 //==============================================================================
 /**
 */
@@ -96,5 +97,6 @@ private:
     };
 
     Node::Ptr FilterNode;
+    Node::Ptr RTGruNode;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

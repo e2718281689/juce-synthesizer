@@ -133,7 +133,8 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
 
     mainProcessor->AudioGroupInit();
-    FilterNode = mainProcessor->addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
+    //FilterNode = mainProcessor->addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
+    RTGruNode = mainProcessor->addProcessorNode(std::make_unique < RTGruProcessor >());
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
     EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
@@ -197,8 +198,8 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
         }
     }
 
-    buffer.clear();
-    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    //buffer.clear();
+    //synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
     //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
     //processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
