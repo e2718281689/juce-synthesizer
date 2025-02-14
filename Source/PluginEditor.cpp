@@ -22,7 +22,6 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     levelSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
     levelSlider.onValueChange = [this] { juce::Decibels::decibelsToGain((float)levelSlider.getValue()); };//¿ÉÒÔµ±³É»Øµ÷º¯Êý
 
-
     xxxSlider.setRange(-72, 10);
     xxxSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
 
@@ -55,6 +54,13 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     //EnvAttack.setTextValueSuffix(" Volume");
     //EnvAttack.setValue(1.0);
 
+    for (int i = 1; i <= 8; ++i)
+    {
+        ModIndexComboBox.addItem(juce::String(i), i);  // 添加数字作为选项
+    }
+    ModIndexComboBox.setSelectedId(1, juce::dontSendNotification); 
+
+    
     addAndMakeVisible(Envlevel);
 
     addAndMakeVisible(EnvAttack);
@@ -74,6 +80,8 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
 
 
     addAndMakeVisible(levelSliderButton);
+
+    addAndMakeVisible(ModIndexComboBox);
     
     setSize(600, 600);
 }
@@ -115,5 +123,8 @@ void ScscAudioProcessorEditor::resized()
     AudioWave.setBounds(10, 90, 200, 200);
 
     EnvWave.setBounds(10, 300, 280, 200);
+
+
+    ModIndexComboBox.setBounds(400, 200, 50, 20);
 
 }

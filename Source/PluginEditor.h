@@ -34,6 +34,7 @@ private:
     // access the processor object that created it.
 
     using SliderVts = juce::AudioProcessorValueTreeState::SliderAttachment;
+    using ComboBoxVts = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
     using ButtonVts = juce::AudioProcessorValueTreeState::ButtonAttachment;
 
     ScscAudioProcessor& audioProcessor;
@@ -54,6 +55,8 @@ private:
     juce::ToggleButton SquareButton;
     juce::ToggleButton NoiseButton;
 
+    juce::ComboBox ModIndexComboBox;
+
     Gui::AudioWaveform AudioWave;
     Gui::EnvWaveform EnvWave;
 
@@ -71,6 +74,8 @@ private:
     ButtonVts SquareButtonAttachment{ audioProcessor.apvts, "SquareButton", SquareButton };
     ButtonVts NoiseButtonAttachment{ audioProcessor.apvts, "NoiseButton", NoiseButton };
     ButtonVts levelSliderButtonAttachment{ audioProcessor.apvts, "levelSliderButton", levelSliderButton };
+
+    ComboBoxVts ModIndexComboBoxAttachment{ audioProcessor.apvts, "ModIndexComboBox", ModIndexComboBox };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessorEditor)
 };
