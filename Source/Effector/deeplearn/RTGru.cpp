@@ -10,6 +10,7 @@
 
 #include "RTGru.h"
 #include "all_model_data_gru9_4count.h"
+#include "../cRT/deeplearn.h"
 
 RTGruProcessor::RTGruProcessor()
 {
@@ -23,20 +24,31 @@ RTGruProcessor::RTGruProcessor()
     dense.setWeights(model_collection[modelIndex].lin_weight);
     dense.setBias(model_collection[modelIndex].lin_bias.data());
     model.reset();
+
+    DL_init();
 }
 
 void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&)
 {
 
     float* Data_L = buffer.getWritePointer(0);
-    float* Data_R = buffer.getWritePointer(0);
+    float* Data_R = buffer.getWritePointer(1);
 
     int numSamples = buffer.getNumSamples();
 
+    int numChannels = buffer.getNumChannels();
+
+    float Data_LT = 0;
+    float Data_RT = 0;
+    float Data_mono = 0;
     for (int i = 0; i < numSamples; ++i)
     {
-        Data_L[i] = model.forward(&Data_L[i]);
-        Data_R[i] = Data_L[i];
+        Data_LT = model.forward(&Data_L[i]);
+        Data_RT = DLapply_forward(Data_L[i]);
+        // Data_mono = Data_L[i]+Data_R[i];
+
+        Data_L[i] = Data_LT;
+        Data_R[i] = Data_RT;
     }
 
     //ampOut = model.forward(input_arr) + input_arr[0];   // Run Model and add Skip Connection; CHANGE FROM v0.1, was calculating skip wrong, should have also added input gain, fixed here

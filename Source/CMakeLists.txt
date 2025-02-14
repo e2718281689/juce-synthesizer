@@ -24,6 +24,9 @@
 # find_package(JUCE CONFIG REQUIRED)        # If you've installed JUCE to your system
 # or
 add_subdirectory(JUCE)# If you've put JUCE in a subdirectory called JUCE
+
+
+set(RTNEURAL_STL ON CACHE BOOL "Use RTNeural with STL backend" FORCE)
 add_subdirectory(./RTNeural)
 
 
@@ -76,6 +79,10 @@ target_sources(AudioPluginExample
         PRIVATE
         PluginEditor.cpp
         PluginProcessor.cpp
+        ./Effector/cRT/deeplearn.c
+        ./Effector/cRT/gru.c
+        ./Effector/cRT/dense.c
+        ./Effector/cRT/common.c
         ./Synth/SynthVoice.cpp
         ./Effector/deeplearn/RTGru.cpp
         ./Maximilian/src/maximilian.cpp
