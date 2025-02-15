@@ -12,9 +12,9 @@ namespace Gui
 		juce::AudioBuffer<float> pathBuffer;
 		PathProducer<juce::Path> pathProducer;
 		juce::Path waveformPath;
-		float length = 200;
-		float height = 200;
-		float date_max = 2;
+		float Width = 0;
+		float Height = 0;
+		float date_max = 1;
 		AudioWaveform(ScscAudioProcessor& p): waveform(p.getSingleChannelSampleFifo())
 		{
 			pathBuffer.setSize(1, 1024);
@@ -31,7 +31,11 @@ namespace Gui
 			g.setColour(juce::Colours::white);
 			g.strokePath(waveformPath, juce::PathStrokeType(1.f));
 		}
-
+		void resized()
+		{
+			Height = getHeight();
+			Width = getWidth();
+		}
 		void timerCallback() override
 		{
 			//waveformPath.clear();
@@ -54,18 +58,18 @@ namespace Gui
 					//	tempIncomingBuffer.getReadPointer(0, 0),
 					//	size);
 					//pathProducer.generatePath(pathBuffer, getLocalBounds().toFloat());
-					auto xxx = tempIncomingBuffer.getSample(1, 0);
-					auto yyy = 0;
-					xxx = juce::jmap<float>(xxx, -date_max, date_max, 0, 200);
-					yyy = juce::jmap<float>(yyy, 0, 1024, 0, 200);
-					waveformPath.startNewSubPath(0, xxx);
-					for (auto a = 1; a < size; ++a)
+					float y_position = tempIncomingBuffer.getSample(1, 0);
+					float x_position = 0;
+					y_position = juce::jmap<float>(y_position, -date_max, date_max, 0, Height);
+					x_position = juce::jmap<float>(x_position, 0, size, 0, Width);
+					waveformPath.startNewSubPath(x_position, y_position);
+					for (auto index = 1; index < size; ++index)
 					{
-						auto xxx = tempIncomingBuffer.getSample(1, a);
-						auto yyy = a;
-						xxx=juce::jmap<float>(xxx, -date_max, date_max, 0, height);
-						yyy=juce::jmap<float>(yyy, 0, 1024, 0, length);
-						waveformPath.lineTo(a, xxx);
+						y_position = tempIncomingBuffer.getSample(1, index);
+						x_position = index;
+						y_position = juce::jmap<float>(y_position, -date_max, date_max, 0, Height);
+						x_position = juce::jmap<float>(x_position, 0, size, 0, Width);
+						waveformPath.lineTo(x_position, y_position);
 					}
 					repaint();
 				}
