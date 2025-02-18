@@ -204,7 +204,7 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
     //processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
 
-    mainProcessor->processBlock(buffer, midiMessages);
+    // mainProcessor->processBlock(buffer, midiMessages);
 
     singleChannelSampleFifo.update(buffer);
 }

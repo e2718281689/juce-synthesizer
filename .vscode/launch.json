@@ -1,0 +1,20 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch VST3 Host",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "D:/Program Files/REAPER (x64)/reaper.exe",
+            // "args": ["path/to/your/plugin.vst3"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            // "preLaunchTask": "build"
+        }
+    ]
+}
