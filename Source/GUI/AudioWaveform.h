@@ -24,16 +24,18 @@ namespace Gui
 				ChannelIndexComboBox.addItem(item.first, item.second);
 				juce::Logger::outputDebugString("xxx" + juce::String(item.second));
 			}
-
 			ChannelIndexComboBox.setSelectedId(1, juce::dontSendNotification);
 			show_mod = 1;
-
+			ChannelIndexComboBox.addListener(this); 
 			
 
 			pathBuffer.setSize(1, 1024);
 			startTimerHz(60);
 		}
-
+		~AudioWaveform()
+		{
+			ChannelIndexComboBox.removeListener(this);
+		}
 		void paint(juce::Graphics& g) override
 		{
 			g.fillAll(juce::Colour(50, 50, 50));
@@ -56,8 +58,9 @@ namespace Gui
 		{
 			if (comboBox == &this->ChannelIndexComboBox)
 			{
-				int selectedIndex = comboBox->getSelectedId() - 1; //1 from
+				int selectedIndex = comboBox->getSelectedId(); //1 from
 				show_mod = selectedIndex;
+				juce::Logger::outputDebugString("show_mod=" + juce::String(selectedIndex));
 			}
 		}
 
