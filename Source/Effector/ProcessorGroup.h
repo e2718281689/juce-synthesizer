@@ -41,9 +41,9 @@ private:
 
 };
 
+template <typename... Layers>
 class ProcessorGroup : public juce::AudioProcessorGraph
 {
-
 
 public:
     ProcessorGroup()
@@ -58,7 +58,7 @@ public:
     }
     void AudioGroupInit()
     {
-        clear(); //清除所有的连接和节点
+        clear(); 
 
         audioInputNode = addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioInputNode));
         audioOutputNode = addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioOutputNode));
@@ -82,7 +82,7 @@ public:
     Node::Ptr addProcessorNode(std::unique_ptr<AudioProcessor> newProcessor, NodeID nodeId = {}, UpdateKind = UpdateKind::sync)
     {
         Node::Ptr ProcessorNodePtr;
-        std::shared_ptr<ProcessorNode> xxx= std::make_shared<ProcessorNode>();//智能指针
+        std::shared_ptr<ProcessorNode> xxx= std::make_shared<ProcessorNode>();//锟斤拷锟斤拷指锟斤拷
 
         xxx->setName(newProcessor->getName());
         ProcessorNodePtr = addNode(std::move(newProcessor));
@@ -97,13 +97,12 @@ public:
     {
         std::shared_ptr<ProcessorNode>  previousNode = nullptr;
 
-        for (auto connection : getConnections()) //清除所有连接
+        for (auto connection : getConnections()) 
                 removeConnection(connection);
 
-        //连接节点，按照Node中的数据
         for (auto currentNode : Node) {
             if (previousNode!= nullptr) {
-                for (int channel = 0; channel < 2; ++channel)
+                for (int channel = 0; channel < 2; ++channel)// stereo in ,channel < 2
                 {
                     juce::Logger::outputDebugString("previousNode=" + juce::String(previousNode->ProcessorName));
                     juce::Logger::outputDebugString("currentNode=" + juce::String(currentNode->ProcessorName));

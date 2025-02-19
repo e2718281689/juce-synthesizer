@@ -90,7 +90,10 @@ private:
     juce::dsp::DelayLine<float> modulatedAPF1{ 22050 };
     //std::unique_ptr<juce::AudioProcessorGraph> mainProcessor{ new juce::AudioProcessorGraph() };
 
-    std::unique_ptr<ProcessorGroup> mainProcessor{ new ProcessorGroup() };
+    // std::unique_ptr<RTGruProcessor> RTGru = std::make_unique<RTGruProcessor>(&apvts);
+
+    // std::unique_ptr<ProcessorGroup<RTGruProcessor>> mainProcessor{ new ProcessorGroup<RTGruProcessor>() };
+    ProcessorGroup<RTGruProcessor> AudioChain;
     enum
     {
         convolutionIndex 

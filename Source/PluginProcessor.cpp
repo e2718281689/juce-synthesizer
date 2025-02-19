@@ -124,17 +124,21 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     const auto channels = juce::jmax(getTotalNumInputChannels(), getTotalNumOutputChannels());
 
+    auto BusInChannels = getMainBusNumInputChannels();
+    auto BusOutChannels = getMainBusNumOutputChannels();
+
+    juce::Logger::outputDebugString("BusInChannels = " + juce::String(BusInChannels));
+    juce::Logger::outputDebugString("BusOutChannels = " + juce::String(BusOutChannels));
 
 
-    mainProcessor->setPlayConfigDetails(getMainBusNumInputChannels(),
-                                        getMainBusNumOutputChannels(),
-                                        sampleRate, samplesPerBlock);
+    AudioChain.setPlayConfigDetails(BusInChannels,BusOutChannels,
+                                    sampleRate, samplesPerBlock);
 
-    mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
+    AudioChain.prepareToPlay(sampleRate, samplesPerBlock);
 
-    mainProcessor->AudioGroupInit();
-    //FilterNode = mainProcessor->addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
-    RTGruNode = mainProcessor->addProcessorNode(std::make_unique < RTGruProcessor >(&apvts));
+    AudioChain.AudioGroupInit();
+    //FilterNode = AudioChain.addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
+    RTGruNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >(&apvts));
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
     EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
@@ -146,7 +150,7 @@ void ScscAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    mainProcessor->releaseResources();
+    AudioChain.releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -204,7 +208,7 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
     //processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));
 
-    // mainProcessor->processBlock(buffer, midiMessages);
+    AudioChain.processBlock(buffer, midiMessages);
 
     singleChannelSampleFifo.update(buffer);
 }
@@ -372,11 +376,11 @@ void ScscAudioProcessor::parameterChanged(const juce::String& parameterID, float
         }
         else if (newValue == 0)
         {
-            //for (auto connection : mainProcessor->getConnections())
-            //    mainProcessor->removeConnection(connection);
-            //mainProcessor->removeNode(FilterNode.get());
+            //for (auto connection : AudioChain.getConnections())
+            //    AudioChain.removeConnection(connection);
+            //AudioChain.removeNode(FilterNode.get());
             //for (int channel = 0; channel < 2; ++channel)
-            //    mainProcessor->addConnection({ { audioInputNode->nodeID,  channel },
+            //    AudioChain.addConnection({ { audioInputNode->nodeID,  channel },
             //                                    { audioOutputNode->nodeID, channel } });
         }
     }
