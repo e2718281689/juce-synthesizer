@@ -49,33 +49,30 @@ void RTGruProcessor::SetMod(int mod)
 void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&)
 {
 
+  double timeSec;
+  {
+    ScopedTimeMeasurement m(timeSec);
+
     float* Data_L = buffer.getWritePointer(0);
     float* Data_R = buffer.getWritePointer(1);
 
     int numSamples = buffer.getNumSamples();
 
-    int numChannels = buffer.getNumChannels();
+    // int numChannels = buffer.getNumChannels();
 
-    float Data_LT = 0;
-    float Data_RT = 0;
-    float Data_mono = 0;
     if(cORcPPindex == 1)
     {
       for (int i = 0; i < numSamples; ++i)
       {
-          Data_LT = model.forward(&Data_L[i]);
-          // Data_RT = DLapply_forward(Data_L[i] * 5);
-          // Data_mono = Data_L[i]+Data_R[i];
-
-          Data_L[i] = Data_LT;
-          Data_R[i] = Data_LT;
+        Data_L[i] = model.forward(&Data_L[i]);
       }
+      memcpy(Data_R, Data_L, numSamples * sizeof(float));
     }
     if(cORcPPindex == 0)
     {
       DLapply(Data_L, Data_L, numSamples);
       memcpy(Data_R, Data_L, numSamples * sizeof(float));
     }
-
-
+  }
+  juce::Logger::outputDebugString("doSomething() took " +  juce::String(timeSec) + "seconds"); 
 }
