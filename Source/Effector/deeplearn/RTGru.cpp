@@ -49,9 +49,8 @@ void RTGruProcessor::SetMod(int mod)
 void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&)
 {
 
-  double timeSec;
-  {
-    ScopedTimeMeasurement m(timeSec);
+
+
 
     float* Data_L = buffer.getWritePointer(0);
     float* Data_R = buffer.getWritePointer(1);
@@ -62,17 +61,28 @@ void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuf
 
     if(cORcPPindex == 1)
     {
-      for (int i = 0; i < numSamples; ++i)
+      double timeSec;
       {
-        Data_L[i] = model.forward(&Data_L[i]);
+        ScopedTimeMeasurement m(timeSec);
+
+        for (int i = 0; i < numSamples; ++i)
+        {
+          Data_L[i] = model.forward(&Data_L[i]);
+        }
+        memcpy(Data_R, Data_L, numSamples * sizeof(float));
       }
-      memcpy(Data_R, Data_L, numSamples * sizeof(float));
+      juce::Logger::outputDebugString("c++ GRU took " +  juce::String(timeSec)); 
     }
+    
     if(cORcPPindex == 0)
     {
-      DLapply(Data_L, Data_L, numSamples);
-      memcpy(Data_R, Data_L, numSamples * sizeof(float));
-    }
-  }
-  juce::Logger::outputDebugString("doSomething() took " +  juce::String(timeSec) + "seconds"); 
+      double timeSec;
+      {
+        ScopedTimeMeasurement m(timeSec);
+
+        DLapply(Data_L, Data_L, numSamples);
+        memcpy(Data_R, Data_L, numSamples * sizeof(float));
+      }
+      juce::Logger::outputDebugString("c GRU took " +  juce::String(timeSec)); 
+    }  
 }
