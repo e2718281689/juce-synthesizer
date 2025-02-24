@@ -49,7 +49,7 @@ void RTGruProcessor::SetMod(int mod)
 void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&)
 {
 
-
+    TRACE_DSP();
 
 
     float* Data_L = buffer.getWritePointer(0);

@@ -68,6 +68,12 @@ target_link_libraries(AudioPluginExample LINK_PUBLIC RTNeural)
 # include all your JUCE module headers; if you're happy to include module headers directly, you
 # probably don't need to call this.
 
+
+set(PERFETTO ON CACHE BOOL "PERFETTO ON" FORCE)
+add_subdirectory (modules/melatonin_perfetto)
+target_link_libraries (AudioPluginExample PRIVATE Melatonin::Perfetto)
+
+
 juce_generate_juce_header(AudioPluginExample)
 
 # `target_sources` adds source files to a target. We pass the target that needs the sources as the

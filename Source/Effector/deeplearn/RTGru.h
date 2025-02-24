@@ -11,6 +11,8 @@
 #pragma once
 #include <JuceHeader.h>
 #include <RTNeural/RTNeural.h>
+#include <melatonin_perfetto/melatonin_perfetto.h>
+
 #include "../ProcessorBase.h"
 
 class RTGruProcessor : public ProcessorBase, public juce::AudioProcessorValueTreeState::Listener
@@ -62,6 +64,10 @@ private:
     unsigned int modelIndex = 0;
     unsigned int cORcPPindex = 0;
     juce::AudioProcessorValueTreeState* Apvts;
+
+    #if PERFETTO
+    std::unique_ptr<perfetto::TracingSession> tracingSession;
+    #endif
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RTGruProcessor)
 };

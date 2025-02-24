@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <melatonin_perfetto/melatonin_perfetto.h>
+
 #include "MIDI/ProcessorMidi.h"
 #include "Maximilian/src/maximilian.h"
 
@@ -18,6 +20,7 @@
 #include "Effector/filter.h"
 #include "Effector/ProcessorGroup.h"
 #include "Effector/deeplearn/RTGru.h"
+
 //==============================================================================
 /**
 */
@@ -88,11 +91,6 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
     SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo{ 1 };
     juce::dsp::DelayLine<float> modulatedAPF1{ 22050 };
-    //std::unique_ptr<juce::AudioProcessorGraph> mainProcessor{ new juce::AudioProcessorGraph() };
-
-    // std::unique_ptr<RTGruProcessor> RTGru = std::make_unique<RTGruProcessor>(&apvts);
-
-    // std::unique_ptr<ProcessorGroup<RTGruProcessor>> mainProcessor{ new ProcessorGroup<RTGruProcessor>() };
     ProcessorGroup<RTGruProcessor> AudioChain;
     enum
     {
@@ -101,5 +99,10 @@ private:
 
     Node::Ptr FilterNode;
     Node::Ptr RTGruNode;
+
+    #if PERFETTO
+    std::unique_ptr<perfetto::TracingSession> tracingSession;
+    #endif
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessor)
 };

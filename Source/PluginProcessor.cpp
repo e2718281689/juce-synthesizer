@@ -39,7 +39,9 @@ ScscAudioProcessor::ScscAudioProcessor()
 
     CabSimulator();
 
-
+    #if PERFETTO
+    std::unique_ptr<perfetto::TracingSession> tracingSession;
+    #endif
 
 }
 
@@ -50,6 +52,11 @@ ScscAudioProcessor::~ScscAudioProcessor()
     apvts.removeParameterListener("EnvSustain", this);
     apvts.removeParameterListener("EnvRelease", this);
     apvts.removeParameterListener("levelSliderButton", this);
+
+    #if PERFETTO
+    MelatoninPerfetto::get().beginSession();
+    #endif
+    
 }
 
 //==============================================================================

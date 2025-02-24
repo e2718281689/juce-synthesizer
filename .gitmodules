@@ -4,3 +4,7 @@
 [submodule "Source/RTNeural"]
 	path = Source/RTNeural
 	url = https://github.com/jatinchowdhury18/RTNeural.git
+[submodule "Source/modules/melatonin_perfetto"]
+	path = Source/modules/melatonin_perfetto
+	url = https://github.com/sudara/melatonin_perfetto.git
+	branch = main
