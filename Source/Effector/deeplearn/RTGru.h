@@ -21,7 +21,8 @@ public:
     RTGruProcessor(juce::AudioProcessorValueTreeState* apvts);
     ~RTGruProcessor()
     {
-
+      Apvts->addParameterListener("ModIndexComboBox", this);
+      Apvts->addParameterListener("cORcPPComboBox", this);
 
     }
 
