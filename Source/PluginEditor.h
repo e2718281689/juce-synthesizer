@@ -56,6 +56,7 @@ private:
     juce::ToggleButton NoiseButton;
 
     juce::ComboBox ModIndexComboBox;
+    juce::ComboBox cORcPPComboBox;
 
     Gui::AudioWaveform AudioWave;
     Gui::EnvWaveform EnvWave;
@@ -76,6 +77,7 @@ private:
     ButtonVts levelSliderButtonAttachment{ audioProcessor.apvts, "levelSliderButton", levelSliderButton };
 
     ComboBoxVts ModIndexComboBoxAttachment{ audioProcessor.apvts, "ModIndexComboBox", ModIndexComboBox };
+    ComboBoxVts cORcPPComboBoxAttachment{ audioProcessor.apvts, "cORcPPComboBox", cORcPPComboBox };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScscAudioProcessorEditor)
 };

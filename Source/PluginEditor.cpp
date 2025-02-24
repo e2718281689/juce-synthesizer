@@ -60,7 +60,9 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     }
     ModIndexComboBox.setSelectedId(1, juce::dontSendNotification); 
 
-    
+    cORcPPComboBox.addItemList({ "c", "c++" }, 1);
+    cORcPPComboBox.setSelectedId(1, juce::dontSendNotification);
+
     addAndMakeVisible(Envlevel);
 
     addAndMakeVisible(EnvAttack);
@@ -82,6 +84,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(levelSliderButton);
 
     addAndMakeVisible(ModIndexComboBox);
+    addAndMakeVisible(cORcPPComboBox);
     
     setSize(600, 600);
 }
@@ -126,5 +129,6 @@ void ScscAudioProcessorEditor::resized()
 
 
     ModIndexComboBox.setBounds(400, 200, 50, 20);
+    cORcPPComboBox.setBounds(400, 230, 100, 20);
 
 }

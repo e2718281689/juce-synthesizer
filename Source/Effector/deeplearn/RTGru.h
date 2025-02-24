@@ -31,6 +31,12 @@ public:
           juce::Logger::outputDebugString("ModIndex =" + juce::String(newValue));
           SetMod((int)newValue);
       }
+      if (parameterID.equalsIgnoreCase("cORcPPComboBox"))
+      {
+          // juce::Logger::outputDebugString("ModIndexComboBox");
+          juce::Logger::outputDebugString("cORcPPindex =" + juce::String(newValue));
+          cORcPPindex = (int)newValue;
+      }
     }
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
     {
@@ -54,6 +60,7 @@ private:
         RTNeural::DenseT<float, 9, 1>> model;
 
     unsigned int modelIndex = 0;
+    unsigned int cORcPPindex = 0;
     juce::AudioProcessorValueTreeState* Apvts;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RTGruProcessor)

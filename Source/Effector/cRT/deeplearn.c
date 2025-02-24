@@ -23,26 +23,15 @@ void DL_init()
 
 void DLapply(float* pcm_in, float* pcm_out, uint32_t n)
 {
-	int j =0;
+	uint16_t j =0;
 
 	if(DL_en == 1)
 	{
 		for(j = 0; j < n; j++ )
 		{
-			float *GRU_out={0};
-			GRU_out = GRU_forward(&pcm_in[2 * j + 1] );
-
-			float *Dense_out={0};
-			Dense_out = DenseT_forward(GRU_out);
-
-			pcm_out[2 * j + 0] = *Dense_out;
-			pcm_out[2 * j + 1] = *Dense_out;
-
+			pcm_out[j] = DLapply_forward(pcm_in[j]);
 		}
-
 	}
-
-
 }
 
 float DLapply_forward(float pcm_in)

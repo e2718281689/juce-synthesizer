@@ -316,6 +316,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
         juce::StringArray{"1", "2", "3", "4", "5", "6", "7", "8"},
         0));  
 
+    parameterLayout.add(std::make_unique<juce::AudioParameterChoice>(
+        "cORcPPComboBox",
+        "cORcPPComboBox",
+        juce::StringArray{"c", "c++"},
+        0));  
 
     return parameterLayout;
 }

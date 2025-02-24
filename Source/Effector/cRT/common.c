@@ -2,9 +2,9 @@
 
 inline float exp1(float x)
 {
-    x = 1.0 + x / 256.0;
+    x = 1.0 + x / 16.0;
     x *= x; x *= x; x *= x; x *= x;
-    x *= x; x *= x; x *= x; x *= x;
+    // x *= x; x *= x; x *= x; x *= x;
     return x;
 }
 

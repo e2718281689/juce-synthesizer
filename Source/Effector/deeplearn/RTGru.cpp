@@ -16,12 +16,16 @@ RTGruProcessor::RTGruProcessor(juce::AudioProcessorValueTreeState* apvts)
 {
   Apvts = apvts;
   Apvts->addParameterListener("ModIndexComboBox", this);
+  Apvts->addParameterListener("cORcPPComboBox", this);
   setupWeights();
 
   // apvts->getParameter("ModIndex");
   int modindex = apvts->getParameterAsValue("ModIndexComboBox").getValue();
   juce::Logger::outputDebugString("ModIndex =" + juce::String(modindex));
-  
+
+  int cORcPPindex = apvts->getParameterAsValue("cORcPPComboBox").getValue();
+  juce::Logger::outputDebugString("cORcPPindex =" + juce::String(cORcPPindex));
+
   SetMod(modindex);
 
   DL_init();
@@ -55,17 +59,23 @@ void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuf
     float Data_LT = 0;
     float Data_RT = 0;
     float Data_mono = 0;
-    for (int i = 0; i < numSamples; ++i)
+    if(cORcPPindex == 1)
     {
-        Data_LT = model.forward(&Data_L[i]);
-        // Data_RT = DLapply_forward(Data_L[i] * 5);
-        // Data_mono = Data_L[i]+Data_R[i];
+      for (int i = 0; i < numSamples; ++i)
+      {
+          Data_LT = model.forward(&Data_L[i]);
+          // Data_RT = DLapply_forward(Data_L[i] * 5);
+          // Data_mono = Data_L[i]+Data_R[i];
 
-        Data_L[i] = Data_LT;
-        Data_R[i] = Data_LT;
+          Data_L[i] = Data_LT;
+          Data_R[i] = Data_LT;
+      }
+    }
+    if(cORcPPindex == 0)
+    {
+      DLapply(Data_L, Data_L, numSamples);
+      memcpy(Data_R, Data_L, numSamples * sizeof(float));
     }
 
-    //ampOut = model.forward(input_arr) + input_arr[0];   // Run Model and add Skip Connection; CHANGE FROM v0.1, was calculating skip wrong, should have also added input gain, fixed here
-    //ampOut *= nnLevelAdjust;
 
 }
