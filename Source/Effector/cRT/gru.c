@@ -93,10 +93,7 @@ float* GRU_forward(float ins[GRU_IN_SIZE])
 //		ht[i] = tanhf(rt[i] * (ct[i] + bh1[i]) + bh0[i] + kernel_outs[i]);
 		ht[i] = tanh_approximate(rt[i] * (ct[i] + bh1[i]) + bh0[i] + (Wh_1[i] * ins[0]));
 	}
-
-
 	computeOutput();
-
 	return GRU_outs;
 }
 
