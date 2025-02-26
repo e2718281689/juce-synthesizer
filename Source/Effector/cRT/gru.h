@@ -15,7 +15,7 @@ void setWVals(float wVals[][27]);
 void setUVals(float uVals[][27]);
 void setBVals(float bVals[][27]);
 
-
+void Gru_reset();
 float* GRU_forward(float ins[GRU_IN_SIZE]);
 
 #ifdef __cplusplus

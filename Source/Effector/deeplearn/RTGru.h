@@ -14,6 +14,7 @@
 #include <melatonin_perfetto/melatonin_perfetto.h>
 
 #include "../ProcessorBase.h"
+#include "../cRT/deeplearn.h"
 
 class RTGruProcessor : public ProcessorBase, public juce::AudioProcessorValueTreeState::Listener
 {
@@ -33,6 +34,7 @@ public:
           // juce::Logger::outputDebugString("ModIndexComboBox");
           juce::Logger::outputDebugString("ModIndex =" + juce::String(newValue));
           SetMod((int)newValue);
+          DL_init((int)newValue);
       }
       if (parameterID.equalsIgnoreCase("cORcPPComboBox"))
       {

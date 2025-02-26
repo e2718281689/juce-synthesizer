@@ -11,6 +11,13 @@ float weights[weights_size] = {0};
 
 float DenseT_outs[DENSE_OUT_SIZE];
 
+void DenseT_reset()
+{
+    memset(bias, 0, sizeof(bias));
+    memset(weights, 0, sizeof(weights));
+    memset(DenseT_outs, 0, sizeof(DenseT_outs));
+}
+
 float* DenseT_forward(float ins[DENSE_IN_SIZE])
 {
 	int i = 0;

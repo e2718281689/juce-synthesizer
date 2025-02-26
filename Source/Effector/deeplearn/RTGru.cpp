@@ -28,7 +28,7 @@ RTGruProcessor::RTGruProcessor(juce::AudioProcessorValueTreeState* apvts)
 
   SetMod(modindex);
 
-  DL_init();
+  DL_init(modindex);
   
 }
 
@@ -71,7 +71,7 @@ void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuf
         }
         memcpy(Data_R, Data_L, numSamples * sizeof(float));
       }
-      juce::Logger::outputDebugString("c++ GRU took " +  juce::String(timeSec)); 
+      // juce::Logger::outputDebugString("c++ GRU took " +  juce::String(timeSec)); 
     }
     
     if(cORcPPindex == 0)
@@ -83,6 +83,6 @@ void RTGruProcessor::processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuf
         DLapply(Data_L, Data_L, numSamples);
         memcpy(Data_R, Data_L, numSamples * sizeof(float));
       }
-      juce::Logger::outputDebugString("c GRU took " +  juce::String(timeSec)); 
+      // juce::Logger::outputDebugString("c GRU took " +  juce::String(timeSec)); 
     }  
 }

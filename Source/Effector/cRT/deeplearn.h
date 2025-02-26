@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-void DL_init();
+void DL_init(uint16_t mod);
 void DLapply(float* pcm_in, float* pcm_out, uint32_t n);
 float DLapply_forward(float pcm_in);
 

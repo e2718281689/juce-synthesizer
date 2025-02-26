@@ -33,6 +33,30 @@ float ht [GRU_OUT_SIZE] = {0};
 
 float GRU_outs[GRU_OUT_SIZE] = {0};
 
+void Gru_reset()
+{
+    memset(Wr, 0, sizeof(Wr));
+    memset(Wz, 0, sizeof(Wz));
+    memset(Wh, 0, sizeof(Wh));
+    memset(kernel_outs, 0, sizeof(kernel_outs));
+    memset(Wz_1, 0, sizeof(Wz_1));
+    memset(Wr_1, 0, sizeof(Wr_1));
+    memset(Wh_1, 0, sizeof(Wh_1));
+    memset(Uz, 0, sizeof(Uz));
+    memset(Ur, 0, sizeof(Ur));
+    memset(Uh, 0, sizeof(Uh));
+    memset(bz, 0, sizeof(bz));
+    memset(br, 0, sizeof(br));
+    memset(bh0, 0, sizeof(bh0));
+    memset(bh1, 0, sizeof(bh1));
+    memset(zt, 0, sizeof(zt));
+    memset(rt, 0, sizeof(rt));
+    memset(ct, 0, sizeof(ct));
+    memset(ht, 0, sizeof(ht));
+    memset(GRU_outs, 0, sizeof(GRU_outs));
+}
+
+
 void kernel_mat_mul(float vec[GRU_IN_SIZE],  float mat[GRU_OUT_SIZE][GRU_IN_SIZE], float out[GRU_OUT_SIZE])
 {
 	int j = 0;

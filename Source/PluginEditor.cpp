@@ -58,7 +58,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     {
         ModIndexComboBox.addItem(juce::String(i), i);  // 添加数字作为选项
     }
-    ModIndexComboBox.setSelectedId(1, juce::dontSendNotification); 
+    ModIndexComboBox.setSelectedId(2, juce::dontSendNotification); 
 
     cORcPPComboBox.addItemList({ "c", "c++" }, 1);
     cORcPPComboBox.setSelectedId(1, juce::dontSendNotification);

@@ -7,6 +7,6 @@
 float* DenseT_forward(float ins[DENSE_IN_SIZE]);
 void setWeights(float newWeights[][9]);
 void setBias(float b);
-
+void DenseT_reset();
 
 #endif /* _DENSE_H */

@@ -30,6 +30,11 @@ set(RTNEURAL_STL ON CACHE BOOL "Use RTNeural with STL backend" FORCE)
 add_subdirectory(./RTNeural)
 
 
+# message(STATUS "fsanitize.")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+# set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
+
+
 # If you are building a VST2 or AAX plugin, CMake needs to be told where to find these SDKs on your
 # system. This setup should be done before calling `juce_add_plugin`.
 
@@ -151,3 +156,5 @@ target_link_libraries(AudioPluginExample
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+
+
