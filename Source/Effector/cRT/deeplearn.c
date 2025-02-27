@@ -31,7 +31,7 @@ void DLapply(float* pcm_in, float* pcm_out, uint32_t n)
 	{
 		for(j = 0; j < n; j++ )
 		{
-			pcm_out[j] = DLapply_forward(pcm_in[j]);
+			pcm_out[j] = DLapply_forward(pcm_in[j] * 5);
 		}
 	}
 }
