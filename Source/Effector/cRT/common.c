@@ -42,8 +42,6 @@ float inner_product(float *vec, float *row, int size)
     //return nds32_dprod_f32(vec, row, size);
 }
 
-
-
 float sigmoid(float value)
 {
     return (float)1 / ((float)1 + exp1(-value));

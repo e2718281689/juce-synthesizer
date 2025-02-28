@@ -20,6 +20,7 @@
 #include "Effector/filter.h"
 #include "Effector/ProcessorGroup.h"
 #include "Effector/deeplearn/RTGru.h"
+#include "Effector/test.h"
 
 //==============================================================================
 /**
@@ -91,7 +92,8 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
     SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo{ 1 };
     juce::dsp::DelayLine<float> modulatedAPF1{ 22050 };
-    ProcessorGroup<RTGruProcessor> AudioChain;
+    ProcessorGroup<> AudioChain;
+    testProcessor xxx;
     enum
     {
         convolutionIndex 

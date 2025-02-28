@@ -96,6 +96,9 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "table.h": "c",
-        "data_gru.h": "c"
+        "data_gru.h": "c",
+        "cinttypes": "cpp",
+        "stack": "cpp",
+        "resumable": "cpp"
     }
 }

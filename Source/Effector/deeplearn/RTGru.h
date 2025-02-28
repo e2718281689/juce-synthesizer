@@ -11,7 +11,6 @@
 #pragma once
 #include <JuceHeader.h>
 #include <RTNeural/RTNeural.h>
-#include <melatonin_perfetto/melatonin_perfetto.h>
 
 #include "../ProcessorBase.h"
 #include "../cRT/deeplearn.h"
@@ -19,58 +18,26 @@
 class RTGruProcessor : public ProcessorBase, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    RTGruProcessor(juce::AudioProcessorValueTreeState* apvts);
-    ~RTGruProcessor()
-    {
-      Apvts->addParameterListener("ModIndexComboBox", this);
-      Apvts->addParameterListener("cORcPPComboBox", this);
+  RTGruProcessor();
+  ~RTGruProcessor();
+  void init(juce::AudioProcessorValueTreeState *apvts);
+  void parameterChanged(const juce::String &parameterID, float newValue);
+  // void prepareToPlay(double sampleRate, int samplesPerBlock); 
+  void processBlock(juce::AudioSampleBuffer &buffer, juce::MidiBuffer &);
+  // void reset(); 
 
-    }
-
-    void parameterChanged(const juce::String& parameterID, float newValue)
-    {
-      if (parameterID.equalsIgnoreCase("ModIndexComboBox"))
-      {
-          // juce::Logger::outputDebugString("ModIndexComboBox");
-          juce::Logger::outputDebugString("ModIndex =" + juce::String(newValue));
-          SetMod((int)newValue);
-          DL_init((int)newValue);
-      }
-      if (parameterID.equalsIgnoreCase("cORcPPComboBox"))
-      {
-          // juce::Logger::outputDebugString("ModIndexComboBox");
-          juce::Logger::outputDebugString("cORcPPindex =" + juce::String(newValue));
-          cORcPPindex = (int)newValue;
-      }
-    }
-    void prepareToPlay(double sampleRate, int samplesPerBlock) override
-    {
-
-    }
-
-    void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&); 
-
-
-    void reset() override
-    {
-
-    }
-
-    void SetMod(int);
-    const juce::String getName() const override { return "RTGru"; }
+  void SetMod(int mod); 
+  const juce::String getName() const override { return "RTGru"; }
 
 private:
-    RTNeural::ModelT<float, 1, 1,
-        RTNeural::GRULayerT<float, 1, 9>,
-        RTNeural::DenseT<float, 9, 1>> model;
+  RTNeural::ModelT<float, 1, 1,
+                   RTNeural::GRULayerT<float, 1, 9>,
+                   RTNeural::DenseT<float, 9, 1>>
+      model;
 
-    unsigned int modelIndex = 0;
-    unsigned int cORcPPindex = 0;
-    juce::AudioProcessorValueTreeState* Apvts;
+  unsigned int modelIndex = 0;
+  unsigned int cORcPPindex = 0;
+  juce::AudioProcessorValueTreeState *Apvts;
 
-    #if PERFETTO
-    std::unique_ptr<perfetto::TracingSession> tracingSession;
-    #endif
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RTGruProcessor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RTGruProcessor)
 };

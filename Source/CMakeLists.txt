@@ -9,6 +9,7 @@
 # information can be found in the CMake docs.
 
 #cmake_minimum_required(VERSION 3.22)
+set(CMAKE_CXX_STANDARD 17)
 
 # The top-level CMakeLists.txt file for a project must contain a literal, direct call to the
 # `project()` command. `project()` sets up some helpful variables that describe source/binary

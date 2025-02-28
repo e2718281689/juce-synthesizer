@@ -145,7 +145,7 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     AudioChain.AudioGroupInit();
     //FilterNode = AudioChain.addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
-    RTGruNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >(&apvts));
+    RTGruNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >());
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
     EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();

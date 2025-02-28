@@ -46,10 +46,9 @@ class ProcessorGroup : public juce::AudioProcessorGraph
 {
 
 public:
-    ProcessorGroup()
+    ProcessorGroup(juce::AudioProcessorValueTreeState *apvts)
     {
-
-
+        Apvts = apvts;
     }
 
     ~ProcessorGroup()
@@ -58,6 +57,13 @@ public:
     }
     void AudioGroupInit()
     {
+        // std::apply([this](auto&&... args) 
+        // {
+        //     // 使用折叠表达式逐个元素调用 forward_element 函数
+        //     (processLayer(args),...);
+        // }, layers);
+
+
         clear(); 
 
         audioInputNode = addNode(std::make_unique<AudioGraphIOProcessor>(AudioGraphIOProcessor::audioInputNode));
@@ -124,6 +130,11 @@ public:
     
 
 private:
+    std::tuple<Layers...> layers;
+    static constexpr size_t n_layers = sizeof...(Layers);
+
+    juce::AudioProcessorValueTreeState *Apvts;
+
     Node::Ptr audioInputNode;
     Node::Ptr audioOutputNode;
     Node::Ptr midiInputNode;
