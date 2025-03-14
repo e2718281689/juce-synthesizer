@@ -16643,6 +16643,83 @@ static const unsigned char temp_binary_data_85[] =
 
 const char* README_md4 = (const char*) temp_binary_data_85;
 
+//================== xxx.py ==================
+static const unsigned char temp_binary_data_86[] =
+"import os\r\n"
+"import math\r\n"
+"\r\n"
+"def sigmoid(x):\r\n"
+"    return 1 / (1 + math.exp(-x))\r\n"
+"\r\n"
+"def tanh(x):\r\n"
+"    return math.tanh(x)\r\n"
+"\r\n"
+"def exp(x):\r\n"
+"    return math.exp(x)\r\n"
+"\r\n"
+"def relu(x):\r\n"
+"    return max(0, x)\r\n"
+"\r\n"
+"def generate_function_data(func, range_start, range_end, num_points):\r\n"
+"    # \xe8\xae\xa1\xe7\xae\x97\xe6\xad\xa5\xe9\x95\xbf\r\n"
+"    step = (range_end - range_start) / (num_points - 1)\r\n"
+"    x_values = []\r\n"
+"    y_values = []\r\n"
+"    x = range_start\r\n"
+"    for _ in range(num_points):\r\n"
+"        x_values.append(x)\r\n"
+"        y_values.append(func(x))\r\n"
+"        x += step\r\n"
+"    return x_values, y_values\r\n"
+"\r\n"
+"def save_to_header_file(filename, functions_data, num_points):\r\n"
+"    # \xe8\x8e\xb7\xe5\x8f\x96\xe5\xbd\x93\xe5\x89\x8d\xe8\x84\x9a\xe6\x9c\xac\xe7\x9a\x84\xe7\x9b\xae\xe5\xbd\x95\r\n"
+"    current_dir = os.path.dirname(os.path.abspath(__file__))\r\n"
+"    # \xe6\x9e\x84\xe9\x80\xa0\xe5\xae\x8c\xe6\x95\xb4\xe7\x9a\x84\xe8\xb7\xaf\xe5\xbe\x84\r\n"
+"    file_path = os.path.join(current_dir, filename)\r\n"
+"    \r\n"
+"    with open(file_path, 'w') as f:\r\n"
+"        f.write('#ifndef ACTIVATION_FUNCTIONS_H\\n')\r\n"
+"        f.write('#define ACTIVATION_FUNCTIONS_H\\n\\n')\r\n"
+"\r\n"
+"        # \xe9\x81\x8d\xe5\x8e\x86\xe6\xaf\x8f\xe4\xb8\xaa\xe5\x87\xbd\xe6\x95\xb0\xe7\x9a\x84\xe6\x95\xb0\xe6\x8d\xae\xef\xbc\x8c\xe7\x94\x9f\xe6\x88\x90\xe5\xa4\x9a\xe4\xb8\xaa\xe6\x95\xb0\xe7\xbb\x84\r\n"
+"        for func_name, (x_values, y_values) in functions_data.items():\r\n"
+"            f.write(f'const float {func_name}_values[{num_points}] = {{\\n')\r\n"
+"            for x, y in zip(x_values, y_values):\r\n"
+"                f.write(f'    {y:.18f}, // x = {x:.18f}\\n')\r\n"
+"                # f.write(f'    {y:.18f},\\n')\r\n"
+"            f.write('};\\n\\n')\r\n"
+"\r\n"
+"        f.write('#endif // ACTIVATION_FUNCTIONS_H\\n')\r\n"
+"\r\n"
+"    print(f\"File saved to: {file_path}\")\r\n"
+"\r\n"
+"# \xe4\xbd\xbf\xe7\x94\xa8\xe7\xa4\xba\xe4\xbe\x8b\r\n"
+"range_start = 0   # \xe8\x8c\x83\xe5\x9b\xb4\xe8\xb5\xb7\xe5\xa7\x8b\xe5\x80\xbc\r\n"
+"range_end = 5      # \xe8\x8c\x83\xe5\x9b\xb4\xe7\xbb\x93\xe6\x9d\x9f\xe5\x80\xbc\r\n"
+"num_points = 8192   # \xe9\x87\x87\xe6\xa0\xb7\xe7\x82\xb9\xe6\x95\xb0\r\n"
+"\r\n"
+"# \xe7\x94\x9f\xe6\x88\x90\xe6\xaf\x8f\xe4\xb8\xaa\xe6\xbf\x80\xe6\xb4\xbb\xe5\x87\xbd\xe6\x95\xb0\xe7\x9a\x84\xe6\x95\xb0\xe6\x8d\xae\r\n"
+"functions_data = {\r\n"
+"    'sigmoid': generate_function_data(sigmoid, range_start, range_end, num_points),\r\n"
+"    'tanh': generate_function_data(tanh, range_start, range_end, num_points),\r\n"
+"    # 'relu': generate_function_data(relu, range_start, range_end, num_points),\r\n"
+"    # 'exp': generate_function_data(exp, range_start, range_end, num_points),\r\n"
+"}\r\n"
+"\r\n"
+"# \xe4\xbf\x9d\xe5\xad\x98\xe5\x88\xb0.h\xe6\x96\x87\xe4\xbb\xb6\r\n"
+"save_to_header_file('table.h', functions_data, num_points)\r\n";
+
+const char* xxx_py = (const char*) temp_binary_data_86;
+
+//================== README.md ==================
+static const unsigned char temp_binary_data_87[] =
+"# WaveNet NAM Model\r\n"
+"\r\n"
+"The code here is from the RTNeural-NAM project, and has been modified to load the the model weights directly from a c++ header file containing vector data. ";
+
+const char* README_md5 = (const char*) temp_binary_data_87;
+
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes);
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
@@ -16741,6 +16818,8 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0x05878caa:  numBytes = 1305; return developer_notes_md;
         case 0x5a320952:  numBytes = 1060; return LICENSE_txt;
         case 0x2aaa9b6c:  numBytes = 4232; return README_md4;
+        case 0xd3988e30:  numBytes = 2045; return xxx_py;
+        case 0x2aaa9b6d:  numBytes = 179; return README_md5;
         default: break;
     }
 
@@ -16835,7 +16914,9 @@ const char* namedResourceList[] =
     "README_md3",
     "developer_notes_md",
     "LICENSE_txt",
-    "README_md4"
+    "README_md4",
+    "xxx_py",
+    "README_md5"
 };
 
 const char* originalFilenames[] =
@@ -16925,6 +17006,8 @@ const char* originalFilenames[] =
     "README.md",
     "developer_notes.md",
     "LICENSE.txt",
+    "README.md",
+    "xxx.py",
     "README.md"
 };
 

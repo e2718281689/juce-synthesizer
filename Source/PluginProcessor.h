@@ -21,6 +21,7 @@
 #include "Effector/gain.h"
 #include "Effector/ProcessorGroup.h"
 #include "Effector/deeplearn/RTGru.h"
+#include "Effector/deeplearn/WaveNet.h"
 #include "Effector/test.h"
 
 //==============================================================================

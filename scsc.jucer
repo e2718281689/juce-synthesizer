@@ -864,11 +864,35 @@
         </GROUP>
       </GROUP>
       <GROUP id="{6559A87D-4BD2-AEFB-F732-2A6F8761E280}" name="Effector">
+        <GROUP id="{18F91B3E-DFCF-DBBA-C5C9-901150DA6E6B}" name="cRT">
+          <FILE id="qDT2EH" name="common.c" compile="1" resource="0" file="Source/Effector/cRT/common.c"/>
+          <FILE id="DrHXlN" name="common.h" compile="0" resource="0" file="Source/Effector/cRT/common.h"/>
+          <FILE id="xYXFAF" name="data_gru.c" compile="1" resource="0" file="Source/Effector/cRT/data_gru.c"/>
+          <FILE id="COMPts" name="data_gru.h" compile="0" resource="0" file="Source/Effector/cRT/data_gru.h"/>
+          <FILE id="jRIfok" name="deeplearn.c" compile="1" resource="0" file="Source/Effector/cRT/deeplearn.c"/>
+          <FILE id="LyYPOS" name="deeplearn.h" compile="0" resource="0" file="Source/Effector/cRT/deeplearn.h"/>
+          <FILE id="ADYltm" name="dense.c" compile="1" resource="0" file="Source/Effector/cRT/dense.c"/>
+          <FILE id="OefkSi" name="dense.h" compile="0" resource="0" file="Source/Effector/cRT/dense.h"/>
+          <FILE id="SmYn8b" name="gru.c" compile="1" resource="0" file="Source/Effector/cRT/gru.c"/>
+          <FILE id="czrBug" name="gru.h" compile="0" resource="0" file="Source/Effector/cRT/gru.h"/>
+          <FILE id="Fnot36" name="table.h" compile="0" resource="0" file="Source/Effector/cRT/table.h"/>
+          <FILE id="owQcRR" name="xxx.py" compile="0" resource="1" file="Source/Effector/cRT/xxx.py"/>
+        </GROUP>
         <GROUP id="{2BA7DFF6-D7D1-33C7-94F1-6F626D1D5607}" name="deeplearn">
           <FILE id="KyJjBo" name="RTGru.cpp" compile="1" resource="0" file="Source/Effector/deeplearn/RTGru.cpp"/>
           <FILE id="g41wR3" name="RTGru.h" compile="0" resource="0" file="Source/Effector/deeplearn/RTGru.h"/>
           <FILE id="jU8Pz8" name="all_model_data_gru9_4count.h" compile="0" resource="0"
                 file="Source/Effector/deeplearn/all_model_data_gru9_4count.h"/>
+        </GROUP>
+        <GROUP id="{29B0CF60-EC86-4C32-7654-16E01FC6FD7E}" name="wavenet">
+          <FILE id="EBTj12" name="arena.hpp" compile="0" resource="0" file="Source/Effector/wavenet/arena.hpp"/>
+          <FILE id="Xlme4v" name="README.md" compile="0" resource="1" file="Source/Effector/wavenet/README.md"/>
+          <FILE id="E8O6fy" name="wavenet_layer.hpp" compile="0" resource="0"
+                file="Source/Effector/wavenet/wavenet_layer.hpp"/>
+          <FILE id="QzEyLB" name="wavenet_layer_array.hpp" compile="0" resource="0"
+                file="Source/Effector/wavenet/wavenet_layer_array.hpp"/>
+          <FILE id="ioHGlc" name="wavenet_model.hpp" compile="0" resource="0"
+                file="Source/Effector/wavenet/wavenet_model.hpp"/>
         </GROUP>
         <FILE id="yvHqEt" name="convolution.h" compile="0" resource="0" file="Source/Effector/convolution.h"/>
         <FILE id="b01JzK" name="filter.h" compile="0" resource="0" file="Source/Effector/filter.h"/>

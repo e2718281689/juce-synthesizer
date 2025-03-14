@@ -1,10 +1,6 @@
 #pragma once
 
-#include <cassert>
-#include <cstddef>
-#include <span>
-#include <sstream>
-#include <vector>
+#include <JuceHeader.h>
 
 namespace wavenet
 {

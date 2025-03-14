@@ -266,8 +266,14 @@ namespace BinaryData
     extern const char*   README_md4;
     const int            README_md4Size = 4232;
 
+    extern const char*   xxx_py;
+    const int            xxx_pySize = 2045;
+
+    extern const char*   README_md5;
+    const int            README_md5Size = 179;
+
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 86;
+    const int namedResourceListSize = 88;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
