@@ -18,6 +18,7 @@
 #include "Synth/SynthVoice.h"
 #include "GUI/AudioFIFO.h"
 #include "Effector/filter.h"
+#include "Effector/gain.h"
 #include "Effector/ProcessorGroup.h"
 #include "Effector/deeplearn/RTGru.h"
 #include "Effector/test.h"

@@ -18,9 +18,9 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
 
-    levelSlider.setRange(-72, 10);//»¬¿éÈ¡Öµ·¶Î§
+    levelSlider.setRange(-72, 10);
     levelSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
-    levelSlider.onValueChange = [this] { juce::Decibels::decibelsToGain((float)levelSlider.getValue()); };//¿ÉÒÔµ±³É»Øµ÷º¯Êý
+    levelSlider.onValueChange = [this] { juce::Decibels::decibelsToGain((float)levelSlider.getValue()); };
 
     xxxSlider.setRange(-72, 10);
     xxxSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);

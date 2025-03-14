@@ -145,6 +145,7 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     AudioChain.AudioGroupInit();
     //FilterNode = AudioChain.addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
+    RTGruNode = AudioChain.addProcessorNode(std::make_unique < GainProcessor >());
     RTGruNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >());
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
@@ -250,8 +251,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
 
     juce::AudioProcessorValueTreeState::ParameterLayout parameterLayout;
     parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(
-        "testslider",
-        "testslider",
+        "levelSlider",
+        "levelSlider",
         juce::NormalisableRange<float>(-72.0f, 10.0f, 0.01f),
         1.0f));
 

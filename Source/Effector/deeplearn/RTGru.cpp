@@ -27,8 +27,8 @@ void RTGruProcessor::SetMod(int mod)
 }
 RTGruProcessor::~RTGruProcessor()
 {
-  Apvts->addParameterListener("ModIndexComboBox", this);
-  Apvts->addParameterListener("cORcPPComboBox", this);
+  Apvts->removeParameterListener("ModIndexComboBox", this);
+  Apvts->removeParameterListener("cORcPPComboBox", this);
 }
 
 RTGruProcessor::RTGruProcessor()

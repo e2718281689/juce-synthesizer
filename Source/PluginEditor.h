@@ -61,7 +61,7 @@ private:
     Gui::AudioWaveform AudioWave;
     Gui::EnvWaveform EnvWave;
 
-    SliderVts sliderAttachment{ audioProcessor.apvts, "testslider", levelSlider };
+    SliderVts sliderAttachment{ audioProcessor.apvts, "levelSlider", levelSlider };
     SliderVts xxxsliderAttachment{ audioProcessor.apvts, "xxxtestslider", xxxSlider };
     SliderVts EnvAttackAttachment{ audioProcessor.apvts, "EnvAttack", EnvAttack };
     SliderVts EnvDecayAttachment{ audioProcessor.apvts, "EnvDecay", EnvDecay };
