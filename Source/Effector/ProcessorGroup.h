@@ -85,11 +85,12 @@ public:
         updateConnectGroup();
 
     }
-    Node::Ptr addProcessorNode(std::unique_ptr<AudioProcessor> newProcessor, NodeID nodeId = {}, UpdateKind = UpdateKind::sync)
+    Node::Ptr addProcessorNode(std::unique_ptr<ProcessorBase> newProcessor, NodeID nodeId = {}, UpdateKind = UpdateKind::sync)
     {
         Node::Ptr ProcessorNodePtr;
         std::shared_ptr<ProcessorNode> xxx= std::make_shared<ProcessorNode>();//����ָ��
 
+        newProcessor->init(Apvts);
         xxx->setName(newProcessor->getName());
         ProcessorNodePtr = addNode(std::move(newProcessor));
         xxx->ProcessorNodePtr = ProcessorNodePtr;

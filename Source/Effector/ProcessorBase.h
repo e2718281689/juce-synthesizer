@@ -24,7 +24,7 @@ public:
     void prepareToPlay(double, int) override {}
     void releaseResources() override {}
     void processBlock(juce::AudioSampleBuffer&, juce::MidiBuffer&) override {}
-
+    virtual void init(juce::AudioProcessorValueTreeState *apvts)  {}
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override { return nullptr; }
     bool hasEditor() const override { return false; }

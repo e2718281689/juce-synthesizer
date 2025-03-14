@@ -20,7 +20,7 @@ class RTGruProcessor : public ProcessorBase, public juce::AudioProcessorValueTre
 public:
   RTGruProcessor();
   ~RTGruProcessor();
-  void init(juce::AudioProcessorValueTreeState *apvts);
+  void init(juce::AudioProcessorValueTreeState *apvts) override ;
   void parameterChanged(const juce::String &parameterID, float newValue);
   // void prepareToPlay(double sampleRate, int samplesPerBlock); 
   void processBlock(juce::AudioSampleBuffer &buffer, juce::MidiBuffer &);

@@ -92,7 +92,7 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout CreateParameters();
     SingleChannelSampleFifo<juce::AudioBuffer<float>> singleChannelSampleFifo{ 1 };
     juce::dsp::DelayLine<float> modulatedAPF1{ 22050 };
-    ProcessorGroup<> AudioChain;
+    ProcessorGroup<> AudioChain{&apvts};
     testProcessor xxx;
     enum
     {
