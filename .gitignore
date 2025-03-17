@@ -369,3 +369,5 @@ Build/
 /Builds/
 /cmake-build-debug/
 .idea/
+.idea/misc.xml
+.idea/vcs.xml
