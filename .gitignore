@@ -368,4 +368,4 @@ Build/
 /Builds/VisualStudio2019
 /Builds/
 /cmake-build-debug/
-/.idea
+.idea/
