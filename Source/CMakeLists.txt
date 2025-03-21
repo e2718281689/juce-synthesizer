@@ -9,7 +9,7 @@
 # information can be found in the CMake docs.
 
 #cmake_minimum_required(VERSION 3.22)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # The top-level CMakeLists.txt file for a project must contain a literal, direct call to the
 # `project()` command. `project()` sets up some helpful variables that describe source/binary
@@ -26,10 +26,13 @@ set(CMAKE_CXX_STANDARD 17)
 # or
 add_subdirectory(JUCE)# If you've put JUCE in a subdirectory called JUCE
 
+#set(RTNEURAL_DEFAULT_ALIGNMENT 8 CACHE STRING "Default alignment for RTNeural")
+#set(RTNEURAL_USE_EIGEN ON CACHE BOOL "Use RTNeural with Eigen backend" FORCE)
 
-set(RTNEURAL_STL ON CACHE BOOL "Use RTNeural with STL backend" FORCE)
+# set(RTNEURAL_STL ON CACHE BOOL "Use RTNeural with STL backend" FORCE)
 add_subdirectory(./RTNeural)
 
+add_subdirectory(./Effector/wavenet)
 
 # message(STATUS "fsanitize.")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
@@ -97,7 +100,12 @@ target_sources(AudioPluginExample
         ./Effector/cRT/common.c
         ./Synth/SynthVoice.cpp
         ./Effector/deeplearn/RTGru.cpp
+        ./Effector/deeplearn/WaveNet.cpp
         ./Maximilian/src/maximilian.cpp
+        ./Effector/cWaveNet/cWaveNet.c
+        ./Effector/cWaveNet/Matrix.c
+        ./Effector/cWaveNet/cconv1d.c
+        ./Effector/cWaveNet/cDenseT.c
         ./MIDI/ProcessorMidi.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer

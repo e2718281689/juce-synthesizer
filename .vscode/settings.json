@@ -99,6 +99,10 @@
         "data_gru.h": "c",
         "cinttypes": "cpp",
         "stack": "cpp",
-        "resumable": "cpp"
+        "resumable": "cpp",
+        "*.inc": "cpp",
+        "matrix.h": "c",
+        "cwavenet.h": "c",
+        "cdenset.h": "c"
     }
 }
