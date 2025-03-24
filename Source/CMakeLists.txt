@@ -104,7 +104,7 @@ target_sources(AudioPluginExample
         ./Maximilian/src/maximilian.cpp
         ./Effector/cWaveNet/cWaveNet.c
         ./Effector/cWaveNet/Matrix.c
-        ./Effector/cWaveNet/cconv1d.c
+        ./Effector/cWaveNet/cConv1d.c
         ./Effector/cWaveNet/cDenseT.c
         ./MIDI/ProcessorMidi.cpp)
 

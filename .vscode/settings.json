@@ -103,6 +103,7 @@
         "*.inc": "cpp",
         "matrix.h": "c",
         "cwavenet.h": "c",
-        "cdenset.h": "c"
+        "cdenset.h": "c",
+        "cconv1d.h": "c"
     }
 }

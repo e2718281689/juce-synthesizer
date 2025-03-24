@@ -1,12 +1,13 @@
 #include "WaveNet.h"
 #include "model_data_nam.h"
 #include "../cWaveNet/cDenseT.h"
+#include "../cWaveNet/cConv1d.h"
 
 WaveNetProcessor::WaveNetProcessor()
 {
-    setupWeightsNam();
-    setupWeightsNam();
-    SelectModel();
+    // setupWeightsNam();
+    // setupWeightsNam();
+    // SelectModel();
 }
 
 void WaveNetProcessor::SetMod(int mod)
@@ -39,7 +40,7 @@ void WaveNetProcessor::init(juce::AudioProcessorValueTreeState *apvts)
   juce::Logger::outputDebugString("ModIndex =" + juce::String(LocalModelIndex));
   
   modelIndex = LocalModelIndex;
-  SelectModel();
+//   SelectModel();
 
   int cORcPPindex = apvts->getParameterAsValue("cORcPPComboBox").getValue();
   juce::Logger::outputDebugString("cORcPPindex =" + juce::String(cORcPPindex));
@@ -62,16 +63,61 @@ void WaveNetProcessor::parameterChanged(const juce::String &parameterID, float n
 
   }
 }
-
 void printMatrix(const Matrix* mat) 
 {
     for (int i = 0; i < mat->rows; ++i) 
     {
         for (int j = 0; j < mat->cols; ++j) {
-            std::cerr << juce::String(i) + "," + juce::String(j) + "=" + juce::String(getElement(mat, i, j)) + " " ; 
+            // std::cout << juce::String(i) + "," + juce::String(j) + "=" + juce::String(getElement(mat, i, j)) + " " ; 
+            std::cout << juce::String(getElement(mat, i, j)) + " " ; 
         }
-        std::cerr << "" << std::endl;
+        std::cout << "" << std::endl;
     }
+}
+
+void debug_cconv1d_forward(cConv1d_Layer *layer, Matrix *ins)
+{
+    // state.col(state_ptr) = ins;
+    setColumn(&layer->state, layer->state_ptr, ins);
+
+    // std::cerr << "&layer->state" << std::endl;
+    // printMatrix(&layer->state);
+
+    for (int k = 0; k < (layer->kernel_size); ++k)
+    {
+        // state_ptrs[k] = (state_ptr + state_size - k * dilation_rate) % state_size;
+
+        setElement(&layer->state_ptrs, k, 0, (float)(((layer->state_ptr) + (layer->state_size) - ( k * (layer->dilation_rate))) % (layer->state_size)));
+    }
+
+    // std::cout << "&layer->state_ptrs" << std::endl;
+    // printMatrix(&layer->state_ptrs);
+
+    for (int k = 0; k < (layer->kernel_length); ++k)
+    {
+        // state_cols.col(k) = state.col(state_ptrs(k));
+
+        copyColumn((&layer->state_cols), k, (&layer->state), (int)getElement((&layer->state_ptrs), k, 0));
+
+        // std::cout << "&layer->state_cols" << std::endl;
+        // printMatrix(&layer->state_cols);
+
+    }
+
+    // std::cout << "&layer->state_cols" << std::endl;
+    // printMatrix(&layer->state_cols);
+
+    for (int i = 0; i < layer->out_size; ++i)
+    {
+        // outs(i) = state_cols.cwiseProduct(weights[i]).sum() + bias(i);
+        float sum = cwiseProductAndSum((&layer->state_cols), &(layer->weights[i]));
+        setElement((&layer->outs), i, 0, sum + getElement((&layer->bias), i, 0));
+    }
+
+    // std::cout << "&layer->outs" << std::endl;
+    // printMatrix(&layer->outs);
+
+    (layer->state_ptr) = ((layer->state_ptr) == (layer->state_size) - 1 ? 0 : (layer->state_ptr) + 1); // iterate state pointer forwards
 }
 
 void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiBuffer &)
@@ -92,61 +138,97 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
     memcpy(Data_R, Data_L, numSamples * sizeof(float));
 #endif 
 
-#if 0
-    RTNeural::DenseT<float, 3, 2, true> rechannel; // no bias!
+#if 1
 
-    rechannel.setWeights({{0.1f, 0.2f, 0.3f},
-                            { 0.4f, 0.5f, 0.6f}});
+    std::cout << " c++ project " << std::endl;
 
-    float bias[2] = {0.7f, 0.8f};
-    rechannel.setBias(bias);
+    RTNeural::Conv1DT<float, 3, 2, 3, 1> conv;
 
-    std::cout << "Weights: \n" << rechannel.weights << std::endl;
+    std::vector<std::vector<std::vector<float>>> weights = {
+        // 第一个输出通道
+        {
+            {0.1f, 0.2f, 0.3f}, // 第一个输入通道的卷积核
+            {0.4f, 0.5f, 0.6f}, // 第二个输入通道的卷积核
+            {0.7f, 0.8f, 0.9f}  // 第三个输入通道的卷积核
+        },
+        // 第二个输出通道
+        {
+            {1.1f, 1.2f, 1.3f},
+            {1.4f, 1.5f, 1.6f},
+            {1.7f, 1.8f, 1.9f}
+        }
+    };
+    
+    conv.setWeights(weights);
 
-    Eigen::Matrix<float, 3, 1> ins;
+    // 设置偏置 (out_size)
+    // float bias[2] = {0.5f, -0.5f};
 
-    ins(0) = 1.0f;
-    ins(1) = 2.0f;
-    ins(2) = 3.0f;
+    std::vector<float> bias = {0.5f, -0.5f};
+
+    conv.setBias(bias);
+
+    std::cout << "weights:\n";
+    std::cout << conv.weights[0] << std::endl;
+    std::cout << conv.weights[1] << std::endl;
+
+    std::cout << "bias:\n";
+    std::cout << conv.bias << std::endl;
 
 
-    rechannel.forward(ins);
+    // 生成10组测试数据
+    for (int i = 0; i < 10; ++i) 
+    {
+        Eigen::Matrix<float, 3, 1> ins;
+        ins << 1.0f * (i + 1), 2.0f * (i + 1), 1.5f * (i + 1);  // 生成不同的输入数据
 
-    std::cout << "outs: \n" << rechannel.outs << std::endl;
+        // 前向传播
+        conv.forward(ins);
+
+        // 输出结果
+        std::cout << "outs:\n" << conv.outs << std::endl;
+    }
 #endif 
 
-#if 0
-    cDenseT_Layer layer;
-    cDenseT_init(&layer, 3, 2, 1); // in_size = 3, out_size = 2, has_bias = 1
 
-    // 定义权重和偏置（行优先存储）
-    float weights[] = {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f};
-    // float bias[] = {0.7f, 0.8f};
 
-    // 定义输入
-    float input_data[] = {1.0f, 2.0f, 3.0f};
-    Matrix input = createMatrix(3, 1);
-    for (int i = 0; i < 3; ++i) 
-        setElement(&input, i, 0, input_data[i]);
+    std::cout << " c project " << std::endl;
 
-    // 设置权重和偏置
-    cDenseT_setWeights(&layer, weights);
-    cDenseT_setBias(&layer, bias);
 
-    std::cout <<" layer.weights \n";
-    printMatrix(&layer.weights);
-    
+#if 1
 
-    // 前向传播
-    cDenseT_forward(&layer, &input);
+    cConv1d_Layer layer;
+    cconv1d_init(&layer, 3, 2, 3, 1, 1);
 
-    // 输出结果
-    std::cout <<"Output:\n";
-    printMatrix(&layer.outs);
 
-    // 释放内存
-    cDenseT_free(&layer);
-    freeMatrix(&input);
+    float cweights[] = { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f, 1.8f, 1.9f };
+    float cbias[] = { 0.5f, -0.5f };
+
+    cconv1d_setWeights(&layer, cweights);
+    cconv1d_setBias(&layer, cbias);
+
+    std::cout << "weights:\n";
+    printMatrix(&layer.weights[0]);
+    printMatrix(&layer.weights[1]);
+
+    std::cout << "bias:\n";
+    printMatrix(&layer.bias);
+
+    // 生成 10 组测试数据
+    for (int i = 0; i < 10; ++i) 
+    {
+        // 创建矩阵并设置元素
+        Matrix cins = createMatrix(3, 1);
+        setElement(&cins, 0, 0, 1.0f * (i + 1));  // 第一个元素
+        setElement(&cins, 1, 0, 2.0f * (i + 1));  // 第二个元素
+        setElement(&cins, 2, 0, 1.5f * (i + 1));  // 第三个元素
+
+        cconv1d_forward(&layer, &cins);
+
+        std::cout << "outs:\n";
+        printMatrix(&layer.outs);
+    }
+
 #endif 
 
     _ASSERTE( _CrtCheckMemory( ) );
