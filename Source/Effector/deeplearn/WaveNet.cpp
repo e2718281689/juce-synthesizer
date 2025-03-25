@@ -1,13 +1,16 @@
 #include "WaveNet.h"
 #include "model_data_nam.h"
+#include "../wavenet/wavenet_layer.hpp"
 #include "../cWaveNet/cDenseT.h"
 #include "../cWaveNet/cConv1d.h"
+#include "../cWaveNet/cWavenet_Layer.h"
+#include "../cWaveNet/Matrix.h"
 
 WaveNetProcessor::WaveNetProcessor()
 {
-    // setupWeightsNam();
-    // setupWeightsNam();
-    // SelectModel();
+    setupWeightsNam();
+    setupWeightsNam();
+    SelectModel();
 }
 
 void WaveNetProcessor::SetMod(int mod)
@@ -40,7 +43,7 @@ void WaveNetProcessor::init(juce::AudioProcessorValueTreeState *apvts)
   juce::Logger::outputDebugString("ModIndex =" + juce::String(LocalModelIndex));
   
   modelIndex = LocalModelIndex;
-//   SelectModel();
+  SelectModel();
 
   int cORcPPindex = apvts->getParameterAsValue("cORcPPComboBox").getValue();
   juce::Logger::outputDebugString("cORcPPindex =" + juce::String(cORcPPindex));
@@ -74,52 +77,66 @@ void printMatrix(const Matrix* mat)
         std::cout << "" << std::endl;
     }
 }
-
-void debug_cconv1d_forward(cConv1d_Layer *layer, Matrix *ins)
+void debug_cWavenet_Layer_forward(cWavenet_Layer *layer, Matrix *ins, Matrix *condition, Matrix *head_io)
 {
-    // state.col(state_ptr) = ins;
-    setColumn(&layer->state, layer->state_ptr, ins);
+        // conv.forward (ins);
+        // input_mixin.forward (condition);
+        // outs = conv.outs + input_mixin.outs;
+        // activation.forward (outs);
+        // head_io.noalias() += activation.outs;
+        // _1x1.forward (activation.outs);
+        // outs = ins + _1x1.outs;
 
-    // std::cerr << "&layer->state" << std::endl;
-    // printMatrix(&layer->state);
+        // conv.forward (ins);
+        cconv1d_forward(&layer->conv, ins);
+        
+        // input_mixin.forward (condition);
+        cDenseT_forward(&layer->input_mixin, condition);
 
-    for (int k = 0; k < (layer->kernel_size); ++k)
-    {
-        // state_ptrs[k] = (state_ptr + state_size - k * dilation_rate) % state_size;
+        // std::cout << "layer->conv.outs" << std::endl;
+        // printMatrix(&layer->conv.outs);
 
-        setElement(&layer->state_ptrs, k, 0, (float)(((layer->state_ptr) + (layer->state_size) - ( k * (layer->dilation_rate))) % (layer->state_size)));
-    }
+        // std::cout << "layer->input_mixin.outs" << std::endl;
+        // printMatrix(&layer->input_mixin.outs);
 
-    // std::cout << "&layer->state_ptrs" << std::endl;
-    // printMatrix(&layer->state_ptrs);
 
-    for (int k = 0; k < (layer->kernel_length); ++k)
-    {
-        // state_cols.col(k) = state.col(state_ptrs(k));
+        // outs = conv.outs + input_mixin.outs;
+        matrixAdd(&layer->conv.outs, &layer->input_mixin.outs, &layer->outs);
 
-        copyColumn((&layer->state_cols), k, (&layer->state), (int)getElement((&layer->state_ptrs), k, 0));
+        // std::cout << "layer->conv.outs" << std::endl;
+        // printMatrix(&layer->conv.outs);
 
-        // std::cout << "&layer->state_cols" << std::endl;
-        // printMatrix(&layer->state_cols);
 
-    }
+        // activation.forward (outs);
+        TanhActivation_forward(&layer->activation, &layer->outs);
 
-    // std::cout << "&layer->state_cols" << std::endl;
-    // printMatrix(&layer->state_cols);
+        // std::cout << "layer->activation.outs_internal" << std::endl;
+        // printMatrix(&layer->activation.outs_internal);
 
-    for (int i = 0; i < layer->out_size; ++i)
-    {
-        // outs(i) = state_cols.cwiseProduct(weights[i]).sum() + bias(i);
-        float sum = cwiseProductAndSum((&layer->state_cols), &(layer->weights[i]));
-        setElement((&layer->outs), i, 0, sum + getElement((&layer->bias), i, 0));
-    }
 
-    // std::cout << "&layer->outs" << std::endl;
-    // printMatrix(&layer->outs);
+        // head_io.noalias() += activation.outs;
+        matrixAdd(head_io, &layer->activation.outs_internal, head_io);
 
-    (layer->state_ptr) = ((layer->state_ptr) == (layer->state_size) - 1 ? 0 : (layer->state_ptr) + 1); // iterate state pointer forwards
+        // std::cout << "head_io" << std::endl;
+        // printMatrix(head_io);
+
+
+        // _1x1.forward (activation.outs);
+        cDenseT_forward(&layer->_1x1, &layer->activation.outs_internal);
+
+        // std::cout << "head_io" << std::endl;
+        // printMatrix(head_io);
+
+
+        // outs = ins + _1x1.outs;
+        matrixAdd(ins, &layer->_1x1.outs, &layer->outs);
+
+        // std::cout << "layer->outs" << std::endl;
+        // printMatrix(&layer->outs);
+
+
+
 }
-
 void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiBuffer &)
 {
     _ASSERTE( _CrtCheckMemory( ) );
@@ -138,98 +155,117 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
     memcpy(Data_R, Data_L, numSamples * sizeof(float));
 #endif 
 
+
 #if 1
 
-    std::cout << " c++ project " << std::endl;
+    std::cout << "c project" << std::endl;
 
-    RTNeural::Conv1DT<float, 3, 2, 3, 1> conv;
+    float *weights_p = model_collection_nam[0].weights.data();
 
-    std::vector<std::vector<std::vector<float>>> weights = {
-        // 第一个输出通道
-        {
-            {0.1f, 0.2f, 0.3f}, // 第一个输入通道的卷积核
-            {0.4f, 0.5f, 0.6f}, // 第二个输入通道的卷积核
-            {0.7f, 0.8f, 0.9f}  // 第三个输入通道的卷积核
-        },
-        // 第二个输出通道
-        {
-            {1.1f, 1.2f, 1.3f},
-            {1.4f, 1.5f, 1.6f},
-            {1.7f, 1.8f, 1.9f}
-        }
-    };
+    Matrix ins;
+    ins = createMatrix(1, 1);
+    clearMatrix(&ins);
+    setElement(&ins, 0, 0, 0.5f);
+
+    cDenseT_Layer rechannel;
+    cDenseT_init(&rechannel, 1, 2, 0);
+    cDenseT_setWeights(&rechannel, weights_p);
+    weights_p += rechannel.out_size * rechannel.in_size ;
+
+    // cDenseT_setBias(&rechannel, weights_p);
+    // weights_p += rechannel.out_size;
+
+
+
+    Matrix head_input;
+    head_input = createMatrix(2, 1);
+    clearMatrix(&head_input);
+
+
+    cWavenet_Layer layer_arrays;
+    cWavenet_Layer_init(&layer_arrays, 1, 2, 3, 1);
+    cWavenet_Layer_load_weights(&layer_arrays, weights_p);
+
+    // cDenseT_forward(&rechannel, &ins);
+
+    // std::cout << "rechannel.outs" << std::endl;
+    // printMatrix(&rechannel.outs);
+
+    // debug_cWavenet_Layer_forward(&layer_arrays, &rechannel.outs, &ins, &head_input);
+
+    // std::cout << "layer_arrays.outs" << std::endl;
+    // printMatrix(&layer_arrays.outs);
     
-    conv.setWeights(weights);
+    std::cout << "rechannel.weights" << std::endl;
+    printMatrix(&rechannel.weights);
 
-    // 设置偏置 (out_size)
-    // float bias[2] = {0.5f, -0.5f};
+    std::cout << "layer_arrays.weights" << std::endl;
+    printMatrix(&layer_arrays.conv.weights[0]);
 
-    std::vector<float> bias = {0.5f, -0.5f};
+    std::cout << "layer_arrays.conv.bias" << std::endl;
+    printMatrix( &layer_arrays.conv.bias );
 
-    conv.setBias(bias);
+    std::cout << "layer_arrays.input_mixin.weights " << std::endl;
+    printMatrix( &layer_arrays.input_mixin.weights );
 
-    std::cout << "weights:\n";
-    std::cout << conv.weights[0] << std::endl;
-    std::cout << conv.weights[1] << std::endl;
-
-    std::cout << "bias:\n";
-    std::cout << conv.bias << std::endl;
+    std::cout << "layer_arrays._1x1.weights" << std::endl;
+    printMatrix( &layer_arrays._1x1.weights );
 
 
-    // 生成10组测试数据
-    for (int i = 0; i < 10; ++i) 
-    {
-        Eigen::Matrix<float, 3, 1> ins;
-        ins << 1.0f * (i + 1), 2.0f * (i + 1), 1.5f * (i + 1);  // 生成不同的输入数据
 
-        // 前向传播
-        conv.forward(ins);
 
-        // 输出结果
-        std::cout << "outs:\n" << conv.outs << std::endl;
-    }
 #endif 
-
-
-
-    std::cout << " c project " << std::endl;
-
 
 #if 1
+        
+    std::cout << "c++ project" << std::endl;
 
-    cConv1d_Layer layer;
-    cconv1d_init(&layer, 3, 2, 3, 1, 1);
+    auto cp_weights_p = model_collection_nam[0].weights.begin();
+
+    Eigen::Matrix<float, 1, 1> cp_ins;
+    Eigen::Matrix<float, 2, 1> cp_head_io;
+    RTNeural::DenseT<float, 1, 2, false> cp_rechannel;
+    wavenet::Wavenet_Layer<float, 1, 2, 3, 1, NAMMathsProvider> cp_layer;
+
+    cp_ins.setZero();
+    cp_head_io.setZero();
+
+    std::vector<std::vector<float>> rechannel_weights (2, std::vector<float> (1));
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 1; j++)
+            rechannel_weights[i][j] = *(cp_weights_p++);
+
+    cp_rechannel.setWeights (rechannel_weights);
+    cp_layer.load_weights (cp_weights_p);
+
+    std::cout << "cp_rechannel.weights" << std::endl;
+    std::cout << cp_rechannel.weights << std::endl;
+
+    std::cout << "cp_layer.conv.weights" << std::endl;
+    std::cout << cp_layer.conv.weights[0] << std::endl;
+
+    std::cout << "cp_layer.conv.bias" << std::endl;
+    std::cout << cp_layer.conv.bias << std::endl;
+
+    std::cout << "cp_layer.input_mixin.weights " << std::endl;
+    std::cout << cp_layer.input_mixin.weights << std::endl;
+
+    std::cout << "cp_layer._1x1.weights" << std::endl;
+    std::cout << cp_layer._1x1.weights << std::endl;
+
+    // cp_ins << 0.5f;
+
+    // cp_rechannel.forward (cp_ins);
+
+    // std::cout << "rechannel.outs" << std::endl;
+    // std::cout << cp_rechannel.outs<< std::endl;
+
+    // cp_layer.forward (cp_rechannel.outs, cp_ins, cp_head_io);
 
 
-    float cweights[] = { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f, 1.8f, 1.9f };
-    float cbias[] = { 0.5f, -0.5f };
-
-    cconv1d_setWeights(&layer, cweights);
-    cconv1d_setBias(&layer, cbias);
-
-    std::cout << "weights:\n";
-    printMatrix(&layer.weights[0]);
-    printMatrix(&layer.weights[1]);
-
-    std::cout << "bias:\n";
-    printMatrix(&layer.bias);
-
-    // 生成 10 组测试数据
-    for (int i = 0; i < 10; ++i) 
-    {
-        // 创建矩阵并设置元素
-        Matrix cins = createMatrix(3, 1);
-        setElement(&cins, 0, 0, 1.0f * (i + 1));  // 第一个元素
-        setElement(&cins, 1, 0, 2.0f * (i + 1));  // 第二个元素
-        setElement(&cins, 2, 0, 1.5f * (i + 1));  // 第三个元素
-
-        cconv1d_forward(&layer, &cins);
-
-        std::cout << "outs:\n";
-        printMatrix(&layer.outs);
-    }
-
-#endif 
+    // std::cout << "cp_layer.outs" << std::endl;
+    // std::cout << cp_layer.outs << std::endl;
+#endif
 
     _ASSERTE( _CrtCheckMemory( ) );
 }

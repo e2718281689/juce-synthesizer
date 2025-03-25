@@ -12,7 +12,7 @@ typedef struct
 {
     Matrix state;
     Matrix state_cols;
-    Matrix weights[5];
+    Matrix *weights;
     Matrix bias;
     Matrix outs;
 

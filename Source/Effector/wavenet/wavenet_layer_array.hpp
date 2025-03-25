@@ -79,7 +79,9 @@ struct Layer_Array
         rechannel.setWeights (rechannel_weights);
 
         RTNeural::modelt_detail::forEachInTuple ([&weights] (auto& layer, size_t)
-                                                 { layer.load_weights (weights); },
+                                                { 
+                                                    layer.load_weights (weights); 
+                                                },
                                                  layers);
 
         std::vector<std::vector<float>> head_rechannel_weights (head_size, std::vector<float> (channels));

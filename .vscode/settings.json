@@ -104,6 +104,9 @@
         "matrix.h": "c",
         "cwavenet.h": "c",
         "cdenset.h": "c",
-        "cconv1d.h": "c"
+        "cconv1d.h": "c",
+        "cactivation.h": "c",
+        "cwavenet_layer.h": "c",
+        "stdfloat": "cpp"
     }
 }

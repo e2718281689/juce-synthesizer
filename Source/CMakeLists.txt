@@ -106,6 +106,8 @@ target_sources(AudioPluginExample
         ./Effector/cWaveNet/Matrix.c
         ./Effector/cWaveNet/cConv1d.c
         ./Effector/cWaveNet/cDenseT.c
+        ./Effector/cWaveNet/cWavenet_Layer.c
+        ./Effector/cWaveNet/cActivation.c
         ./MIDI/ProcessorMidi.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer

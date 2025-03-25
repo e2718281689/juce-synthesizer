@@ -117,6 +117,34 @@ int matrixMultiply(const Matrix* A, const Matrix* B, Matrix* C) {
 
     return 1; // 返回 1 表示乘法成功
 }
+// 将两个矩阵相加，结果存储在 result 中
+void matrixAdd(const Matrix* mat1, const Matrix* mat2, Matrix* result)
+{
+    if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
+        printf("Matrix size mismatch in addition!\n");
+        return;
+    }
+
+    for (int i = 0; i < mat1->rows; ++i) {
+        for (int j = 0; j < mat1->cols; ++j) {
+            float sum = getElement(mat1, i, j) + getElement(mat2, i, j);
+            setElement(result, i, j, sum);
+        }
+    }
+}
+// tanh 激活操作
+void matrixTanh(const Matrix* input, Matrix* output) 
+{
+    if (input->rows != output->rows || input->cols != output->cols) {
+        printf("Matrix size mismatch in tanh operation!\n");
+        return;
+    }
+
+    for (int i = 0; i < input->rows * input->cols; ++i) {
+        output->data[i] = tanhf(input->data[i]);
+    }
+}
+
 //清空矩阵
 void clearMatrix(Matrix* mat) 
 {

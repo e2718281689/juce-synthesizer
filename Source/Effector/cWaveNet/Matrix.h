@@ -32,7 +32,8 @@ void copySelectedColumns(Matrix* state_cols, const Matrix* state, const int* sta
 float cwiseProductAndSum(const Matrix* mat1, const Matrix* mat2);
 void clearMatrix(Matrix* mat);
 int matrixMultiply(const Matrix* A, const Matrix* B, Matrix* C);
-
+void matrixAdd(const Matrix* mat1, const Matrix* mat2, Matrix* result);
+void matrixTanh(const Matrix* input, Matrix* output);
 #ifdef __cplusplus
 }
 #endif

@@ -22,11 +22,15 @@ void cconv1d_init(cConv1d_Layer *layer, int in_sizet, int out_sizet, int kernel_
     layer->state_cols = createMatrix((int)(layer->filters_per_group), layer->kernel_size);
     clearMatrix(&layer->state_cols);
 
+    // 新增 未作测试
+    layer->weights = (Matrix *)malloc(layer->out_size * sizeof(Matrix));
+
     for (int i = 0; i < layer->out_size; ++i)
     {
         layer->weights[i] = createMatrix((int)(layer->filters_per_group), layer->kernel_size);
         clearMatrix(&layer->weights[i]);
     }
+
     layer->bias = createMatrix(layer->out_size, 1);
     clearMatrix(&layer->bias);
     
@@ -75,6 +79,11 @@ void cconv1d_Free(cConv1d_Layer *layer)
     {
         freeMatrix(&layer->weights[i]);
     }
+
+    // 未作检查 
+    free(&layer->weights);
+    layer->weights = NULL;
+
     freeMatrix(&layer->bias);
     freeMatrix(&layer->outs);
     freeMatrix(&layer->state_ptrs);
