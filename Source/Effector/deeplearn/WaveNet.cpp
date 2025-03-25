@@ -93,46 +93,46 @@ void debug_cWavenet_Layer_forward(cWavenet_Layer *layer, Matrix *ins, Matrix *co
         // input_mixin.forward (condition);
         cDenseT_forward(&layer->input_mixin, condition);
 
-        // std::cout << "layer->conv.outs" << std::endl;
-        // printMatrix(&layer->conv.outs);
+        std::cout << "layer->conv.outs" << std::endl;
+        printMatrix(&layer->conv.outs);
 
-        // std::cout << "layer->input_mixin.outs" << std::endl;
-        // printMatrix(&layer->input_mixin.outs);
+        std::cout << "layer->input_mixin.outs" << std::endl;
+        printMatrix(&layer->input_mixin.outs);
 
 
         // outs = conv.outs + input_mixin.outs;
         matrixAdd(&layer->conv.outs, &layer->input_mixin.outs, &layer->outs);
 
-        // std::cout << "layer->conv.outs" << std::endl;
-        // printMatrix(&layer->conv.outs);
+        std::cout << "layer->conv.outs" << std::endl;
+        printMatrix(&layer->conv.outs);
 
 
         // activation.forward (outs);
         TanhActivation_forward(&layer->activation, &layer->outs);
 
-        // std::cout << "layer->activation.outs_internal" << std::endl;
-        // printMatrix(&layer->activation.outs_internal);
+        std::cout << "layer->activation.outs_internal" << std::endl;
+        printMatrix(&layer->activation.outs_internal);
 
 
         // head_io.noalias() += activation.outs;
         matrixAdd(head_io, &layer->activation.outs_internal, head_io);
 
-        // std::cout << "head_io" << std::endl;
-        // printMatrix(head_io);
+        std::cout << "head_io" << std::endl;
+        printMatrix(head_io);
 
 
         // _1x1.forward (activation.outs);
         cDenseT_forward(&layer->_1x1, &layer->activation.outs_internal);
 
-        // std::cout << "head_io" << std::endl;
-        // printMatrix(head_io);
+        std::cout << "layer->_1x1.outs" << std::endl;
+        printMatrix(&layer->_1x1.outs);
 
 
         // outs = ins + _1x1.outs;
         matrixAdd(ins, &layer->_1x1.outs, &layer->outs);
 
-        // std::cout << "layer->outs" << std::endl;
-        // printMatrix(&layer->outs);
+        std::cout << "layer->outs" << std::endl;
+        printMatrix(&layer->outs);
 
 
 
@@ -140,7 +140,7 @@ void debug_cWavenet_Layer_forward(cWavenet_Layer *layer, Matrix *ins, Matrix *co
 void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiBuffer &)
 {
     _ASSERTE( _CrtCheckMemory( ) );
-#if 0
+#if 1
     float *Data_L = buffer.getWritePointer(0);
     float *Data_R = buffer.getWritePointer(1);
 
@@ -156,7 +156,7 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
 #endif 
 
 
-#if 1
+#if 0
 
     std::cout << "c project" << std::endl;
 
@@ -165,7 +165,7 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
     Matrix ins;
     ins = createMatrix(1, 1);
     clearMatrix(&ins);
-    setElement(&ins, 0, 0, 0.5f);
+    setElement(&ins, 0, 0, 0.7f);
 
     cDenseT_Layer rechannel;
     cDenseT_init(&rechannel, 1, 2, 0);
@@ -186,37 +186,24 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
     cWavenet_Layer_init(&layer_arrays, 1, 2, 3, 1);
     cWavenet_Layer_load_weights(&layer_arrays, weights_p);
 
-    // cDenseT_forward(&rechannel, &ins);
+    cDenseT_forward(&rechannel, &ins);
 
-    // std::cout << "rechannel.outs" << std::endl;
-    // printMatrix(&rechannel.outs);
+    std::cout << "rechannel.outs" << std::endl;
+    printMatrix(&rechannel.outs);
 
-    // debug_cWavenet_Layer_forward(&layer_arrays, &rechannel.outs, &ins, &head_input);
+    debug_cWavenet_Layer_forward(&layer_arrays, &rechannel.outs, &ins, &head_input);
 
-    // std::cout << "layer_arrays.outs" << std::endl;
-    // printMatrix(&layer_arrays.outs);
+    std::cout << "layer_arrays.outs" << std::endl;
+    printMatrix(&layer_arrays.outs);
     
-    std::cout << "rechannel.weights" << std::endl;
-    printMatrix(&rechannel.weights);
 
-    std::cout << "layer_arrays.weights" << std::endl;
-    printMatrix(&layer_arrays.conv.weights[0]);
-
-    std::cout << "layer_arrays.conv.bias" << std::endl;
-    printMatrix( &layer_arrays.conv.bias );
-
-    std::cout << "layer_arrays.input_mixin.weights " << std::endl;
-    printMatrix( &layer_arrays.input_mixin.weights );
-
-    std::cout << "layer_arrays._1x1.weights" << std::endl;
-    printMatrix( &layer_arrays._1x1.weights );
 
 
 
 
 #endif 
 
-#if 1
+#if 0
         
     std::cout << "c++ project" << std::endl;
 
@@ -238,33 +225,18 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
     cp_rechannel.setWeights (rechannel_weights);
     cp_layer.load_weights (cp_weights_p);
 
-    std::cout << "cp_rechannel.weights" << std::endl;
-    std::cout << cp_rechannel.weights << std::endl;
+    cp_ins << 0.7f;
 
-    std::cout << "cp_layer.conv.weights" << std::endl;
-    std::cout << cp_layer.conv.weights[0] << std::endl;
+    cp_rechannel.forward (cp_ins);
 
-    std::cout << "cp_layer.conv.bias" << std::endl;
-    std::cout << cp_layer.conv.bias << std::endl;
+    std::cout << "rechannel.outs" << std::endl;
+    std::cout << cp_rechannel.outs<< std::endl;
 
-    std::cout << "cp_layer.input_mixin.weights " << std::endl;
-    std::cout << cp_layer.input_mixin.weights << std::endl;
-
-    std::cout << "cp_layer._1x1.weights" << std::endl;
-    std::cout << cp_layer._1x1.weights << std::endl;
-
-    // cp_ins << 0.5f;
-
-    // cp_rechannel.forward (cp_ins);
-
-    // std::cout << "rechannel.outs" << std::endl;
-    // std::cout << cp_rechannel.outs<< std::endl;
-
-    // cp_layer.forward (cp_rechannel.outs, cp_ins, cp_head_io);
+    cp_layer.forward (cp_rechannel.outs, cp_ins, cp_head_io);
 
 
-    // std::cout << "cp_layer.outs" << std::endl;
-    // std::cout << cp_layer.outs << std::endl;
+    std::cout << "cp_layer.outs" << std::endl;
+    std::cout << cp_layer.outs << std::endl;
 #endif
 
     _ASSERTE( _CrtCheckMemory( ) );
