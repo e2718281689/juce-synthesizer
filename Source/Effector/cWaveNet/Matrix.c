@@ -132,6 +132,15 @@ void matrixAdd(const Matrix* mat1, const Matrix* mat2, Matrix* result)
         }
     }
 }
+void copyMatrix(const Matrix* src, Matrix* dst) 
+{
+    if (src->rows != dst->rows || src->cols != dst->cols) {
+        printf("Matrix size mismatch in copy operation!\n");
+        return;
+    }
+
+    memcpy(dst->data, src->data, src->rows * src->cols * sizeof(float));
+}
 // tanh 激活操作
 void matrixTanh(const Matrix* input, Matrix* output) 
 {

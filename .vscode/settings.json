@@ -107,6 +107,9 @@
         "cconv1d.h": "c",
         "cactivation.h": "c",
         "cwavenet_layer.h": "c",
-        "stdfloat": "cpp"
+        "stdfloat": "cpp",
+        "cwavenet_layer_array.h": "c",
+        "core": "cpp",
+        "superlusupport": "cpp"
     }
 }

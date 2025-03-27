@@ -1,9 +1,7 @@
 #include "cWavenet_Layer.h"
 
-
 void cWavenet_Layer_init(cWavenet_Layer *layer, int condition_size, int channels, int kernel_size, int dilation)
 {
-
 
     layer->condition_size = condition_size;
     layer->channels = channels;
@@ -51,12 +49,12 @@ void reverseKernels(float* conv_weights, int channels, int filters_per_group, in
 }
 
 // 加载参数
-void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float* weights) 
+void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float** weights) 
 {
     // 重置卷积层
     // resetConvLayer(conv);
 
-    float* weights_p = weights;
+    float* weights_p = *weights;
 
 
     int weights_len = layer->conv.out_size* layer->conv.filters_per_group* layer->conv.kernel_size;
@@ -91,8 +89,10 @@ void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float* weights)
 
     // 设置 1x1 层的偏置
     cDenseT_setBias(&layer->_1x1, weights_p);
+    weights_p += (layer->channels);
 
-    weights = weights_p;
+
+    *weights = weights_p;
 }
 
 // 执行 tanh 激活操作
@@ -126,6 +126,7 @@ void cWavenet_Layer_forward(cWavenet_Layer *layer, Matrix *ins, Matrix *conditio
 
         // conv.forward (ins);
         cconv1d_forward(&layer->conv, ins);
+        
         // input_mixin.forward (condition);
         cDenseT_forward(&layer->input_mixin, condition);
 
@@ -142,7 +143,8 @@ void cWavenet_Layer_forward(cWavenet_Layer *layer, Matrix *ins, Matrix *conditio
         cDenseT_forward(&layer->_1x1, &layer->activation.outs_internal);
 
         // outs = ins + _1x1.outs;
-        matrixAdd(ins, &layer->_1x1.outs, ins);
+        matrixAdd(ins, &layer->_1x1.outs, &layer->outs);
+
 
 }
 
