@@ -44,6 +44,15 @@ void cconv1d_init(cConv1d_Layer *layer, int in_sizet, int out_sizet, int kernel_
     layer->state_ptrs = createMatrix(layer->kernel_size, 1);
     clearMatrix(&layer->state_ptrs);
 }
+void cconv1d_reset(cConv1d_Layer *layer)
+{
+    clearMatrix(&layer->state);
+    clearMatrix(&layer->state_cols);
+    clearMatrix(&layer->state_ptrs);
+
+    layer->state_ptr = 0;
+
+}
 void cconv1d_setWeights(cConv1d_Layer *layer, float *ws)
 {
     for (int i = 0; i < layer->out_size; ++i)

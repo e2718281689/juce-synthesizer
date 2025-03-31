@@ -40,7 +40,7 @@ void cWavenet_layer_array_init(cWavenet_layer_array *layer,
 
 }
 
-void cWavenet_layer_array_load_weights(cWavenet_layer_array *layer ,float* weights )
+void cWavenet_layer_array_load_weights(cWavenet_layer_array *layer ,float** weights )
 {
 
     // std::vector<std::vector<float>> rechannel_weights (channels, std::vector<float> (in_size));
@@ -69,23 +69,26 @@ void cWavenet_layer_array_load_weights(cWavenet_layer_array *layer ,float* weigh
     //     head_rechannel.setBias (head_rechannel_bias.data());
     // }
 
+    float* p_weights = *weights;
 
-    cDenseT_setWeights(&layer->rechannel, weights);
-    weights += layer->channels * layer->in_size ;
+    cDenseT_setWeights(&layer->rechannel, p_weights);
+    p_weights += layer->channels * layer->in_size ;
 
     for (int i = 0; i < layer->DilationsSum; i++)
     {
-        cWavenet_Layer_load_weights(&layer->layers[i], &weights);
+        cWavenet_Layer_load_weights(&layer->layers[i], &p_weights);
     }
 
-    cDenseT_setWeights(&layer->head_rechannel, weights);
-    weights += layer->head_size * layer->channels;
+    cDenseT_setWeights(&layer->head_rechannel, p_weights);
+    p_weights += layer->head_size * layer->channels;
 
     if (layer->has_head_bias)
     {
-        cDenseT_setBias(&layer->head_rechannel, weights);
-        weights += layer->head_size;
+        cDenseT_setBias(&layer->head_rechannel, p_weights);
+        p_weights += layer->head_size;
     }
+
+    *weights = p_weights;
 }
 
 // void forward (const Eigen::Matrix<T, in_size, 1>& ins,
@@ -132,6 +135,13 @@ void cWavenet_layer_array_forward(cWavenet_layer_array* layer, Matrix* ins, Matr
     // decltype (Last_Layer_Type::outs)& layer_outputs { std::get<std::tuple_size_v<decltype (layers)> - 1> (layers).outs };
     copyMatrix(&layer->layers[layer->DilationsSum-1].outs, &layer->layer_outputs);
     
+}
+void cWavenet_layer_array_reset(cWavenet_layer_array* layer)
+{
+    for (int i = 0; i < layer->DilationsSum; i++)
+    {
+        cWavenet_Layer_reset(&layer->layers[i]);
+    }
 }
 void cWavenet_layer_array_free(cWavenet_layer_array* layer)
 {

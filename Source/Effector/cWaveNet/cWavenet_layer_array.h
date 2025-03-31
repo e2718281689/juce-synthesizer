@@ -36,10 +36,10 @@ void cWavenet_layer_array_init(cWavenet_layer_array *layer,
     int DilationsSum,
     int has_head_bias);
 
-void cWavenet_layer_array_load_weights(cWavenet_layer_array *layer ,float* weights );
+void cWavenet_layer_array_load_weights(cWavenet_layer_array *layer ,float** weights );
 void cWavenet_layer_array_forward(cWavenet_layer_array* layer, Matrix* ins, Matrix* condition, Matrix* head_io);
 void cWavenet_layer_array_free(cWavenet_layer_array *layer);
-
+void cWavenet_layer_array_reset(cWavenet_layer_array* layer);
 #ifdef __cplusplus
 }
 #endif

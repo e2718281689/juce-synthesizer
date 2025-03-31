@@ -60,7 +60,7 @@ private:
                          wavenet::Layer_Array<float, 2, 1, 1, 2, 3, Dilations2, true, NAMMathsProvider>>
   rtneural_wavenet;
 
-  unsigned int cORcPPindex = 0;
+  int cORcPPindex = 0;
   int modelIndex = 0;
   int m_currentModelindex = -1;
 

@@ -19,6 +19,7 @@ void cWavenet_Layer_init(cWavenet_Layer *layer, int condition_size, int channels
 
 }
 
+
 // 释放内存
 void cWavenet_Layer_free(cWavenet_Layer *layer)
 {
@@ -48,11 +49,17 @@ void reverseKernels(float* conv_weights, int channels, int filters_per_group, in
     }
 }
 
+// 复位
+void cWavenet_Layer_reset(cWavenet_Layer *layer)
+{
+    cconv1d_reset(&layer->conv);
+}
+
 // 加载参数
 void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float** weights) 
 {
     // 重置卷积层
-    // resetConvLayer(conv);
+    cconv1d_reset(&layer->conv);
 
     float* weights_p = *weights;
 

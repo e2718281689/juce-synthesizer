@@ -8,7 +8,10 @@ extern "C" {
 #include "matrix.h"
 
 float WaveNet_forward(float pcm_in);
-
+void WaveNet_init();
+void WaveNet_load_weights(float *weights);
+void WaveNet_free();
+void WaveNet_reset();
 #ifdef __cplusplus
 }
 #endif

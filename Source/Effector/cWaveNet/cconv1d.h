@@ -46,6 +46,10 @@ void cconv1d_setWeights(cConv1d_Layer *layer, float *ws);
 void cconv1d_setBias(cConv1d_Layer *layer, float *biasVals);
 void cconv1d_Free(cConv1d_Layer *layer);
 void cconv1d_forward(cConv1d_Layer *layer, Matrix *ins);
+void cconv1d_reset(cConv1d_Layer *layer);
+
+
+
 
 #ifdef __cplusplus
 }

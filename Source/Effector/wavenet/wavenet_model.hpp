@@ -53,7 +53,11 @@ struct Wavenet_Model
             },
             layer_arrays);
         for (int i = 0; i < 1 << 14; ++i)
+        {
             forward (0.0f);
+            std::cout << "prewarm" << std::endl;
+        }
+            
     }
     /*
     void load_weights (const nlohmann::json& model_json)
@@ -111,6 +115,10 @@ struct Wavenet_Model
 #if RTNEURAL_USE_EIGEN
                     head_input.setZero();
                     std::get<0> (layer_arrays).forward (v_ins, v_ins, head_input);
+
+                    // std::cout << "std::get<0> (layer_arrays).layer_outputs" << std::endl;
+                    // std::cout << std::get<0> (layer_arrays).layer_outputs << std::endl;
+
 #elif RTNEURAL_USE_XSIMD
                     std::fill (std::begin (head_input), std::end (head_input), xsimd::batch<T> {});
                     std::get<0> (layer_arrays).forward (v_ins, v_ins, head_input);
@@ -119,6 +127,9 @@ struct Wavenet_Model
                 else
                 {
                     std::get<index> (layer_arrays).forward (std::get<index - 1> (layer_arrays).layer_outputs, v_ins, std::get<index - 1> (layer_arrays).head_outputs);
+
+                    // std::cout << " std::get<index - 1> (layer_arrays).head_outputs" << std::endl;
+                    // std::cout <<  std::get<index - 1> (layer_arrays).head_outputs << std::endl;
                 }
             },
             layer_arrays);

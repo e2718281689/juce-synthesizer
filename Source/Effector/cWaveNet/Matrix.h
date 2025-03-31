@@ -36,7 +36,7 @@ int matrixMultiply(const Matrix* A, const Matrix* B, Matrix* C);
 void matrixAdd(const Matrix* mat1, const Matrix* mat2, Matrix* result);
 void matrixTanh(const Matrix* input, Matrix* output);
 void copyMatrix(const Matrix* src, Matrix* dst);
-
+void printMatrix(const Matrix* mat);
 #ifdef __cplusplus
 }
 #endif
