@@ -1,5 +1,6 @@
 #include "common.h"
 #include "table.h"
+#include "math.h"
 
 #define MAP_VALUE(input, input_min, input_max, output_min, output_max) \
     (output_min + ((input - input_min) / (input_max - input_min)) * (output_max - output_min))
@@ -44,7 +45,7 @@ float inner_product(float *vec, float *row, int size)
 
 float sigmoid(float value)
 {
-    return (float)1 / ((float)1 + exp1(-value));
+    return (float)1 / ((float)1 + exp(-value));
     // if(value >= 5)
     // {
     //     return 1;

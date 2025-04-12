@@ -13,11 +13,11 @@ void DL_init(uint16_t mod)
 	Gru_reset();
 	DenseT_reset();
 
-    setWVals(model_collection[mod]->rec_weight_ih_l0);
-    setUVals(model_collection[mod]->rec_weight_hh_l0);
-    setBVals(model_collection[mod]->rec_bias);
-    setWeights(model_collection[mod]->lin_weight);
-    setBias(*(model_collection[mod]->lin_bias));
+    setWVals(c_model_collection[mod]->rec_weight_ih_l0);
+    setUVals(c_model_collection[mod]->rec_weight_hh_l0);
+    setBVals(c_model_collection[mod]->rec_bias);
+    setWeights(c_model_collection[mod]->lin_weight);
+    setBias(*(c_model_collection[mod]->lin_bias));
 
     DL_en = 1;
     //APP_DBG("DL_init\r\n");

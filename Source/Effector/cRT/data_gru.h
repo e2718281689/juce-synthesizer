@@ -206,7 +206,7 @@ struct NeuralNetworkWeights GRU_weights8 =
     .levelAdjust = 0.5,
 };
 
-struct NeuralNetworkWeights* model_collection[8] = {&GRU_weights1, &GRU_weights2, &GRU_weights3, &GRU_weights4, &GRU_weights5, &GRU_weights6, &GRU_weights7, &GRU_weights8};
+struct NeuralNetworkWeights* c_model_collection[8] = {&GRU_weights1, &GRU_weights2, &GRU_weights3, &GRU_weights4, &GRU_weights5, &GRU_weights6, &GRU_weights7, &GRU_weights8};
 #ifdef __cplusplus
 }
 #endif

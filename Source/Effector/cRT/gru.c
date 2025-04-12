@@ -2,6 +2,8 @@
 #include <math.h>
 #include "gru.h"
 #include "common.h"
+#include "util.h"
+#include "string.h"
 
 // kernel weights
 float Wr [GRU_OUT_SIZE][GRU_IN_SIZE] = {0};

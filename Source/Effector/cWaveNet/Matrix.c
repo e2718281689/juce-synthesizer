@@ -1,4 +1,6 @@
 #include "Matrix.h"
+#include <stdlib.h>
+#include <string.h>
 
 // 创建矩阵
 Matrix createMatrix(int rows, int cols) {
@@ -78,7 +80,7 @@ float cwiseProductAndSum(const Matrix* mat1, const Matrix* mat2)
     // 检查矩阵的大小是否匹配
     if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
         printf("Matrix dimensions must match for cwiseProduct!\n");
-        return;
+        return 0;
     }
     
 

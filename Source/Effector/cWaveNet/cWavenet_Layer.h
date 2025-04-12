@@ -30,9 +30,10 @@ typedef struct cWavenet_Layer
 
 void cWavenet_Layer_init(cWavenet_Layer *layer, int condition_size, int channels, int kernel_size, int dilation);
 void cWavenet_Layer_free(cWavenet_Layer *layer);
-void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float* weights);
+// void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float* weights);
 void cWavenet_Layer_forward(cWavenet_Layer *layer, Matrix *ins, Matrix *condition, Matrix *head_io);
 void cWavenet_Layer_reset(cWavenet_Layer *layer);
+    void cWavenet_Layer_load_weights(cWavenet_Layer *layer, float** weights);
 #ifdef __cplusplus
 }
 #endif

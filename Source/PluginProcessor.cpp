@@ -145,9 +145,9 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     AudioChain.AudioGroupInit();
     //FilterNode = AudioChain.addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
-    RTGruNode = AudioChain.addProcessorNode(std::make_unique < GainProcessor >());
-    // RTGruNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >());
-    RTGruNode = AudioChain.addProcessorNode(std::make_unique < WaveNetProcessor >());
+    // RTGruNode = AudioChain.addProcessorNode(std::make_unique < GainProcessor >());
+    RTGruNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >());
+    // RTGruNode = AudioChain.addProcessorNode(std::make_unique < WaveNetProcessor >());
 
     EnvAttackTime = apvts.getParameterAsValue("EnvAttack").getValue();
     EnvDecayTime = apvts.getParameterAsValue("EnvDecay").getValue();
@@ -211,8 +211,8 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
         }
     }
 
-    //buffer.clear();
-    //synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    buffer.clear();
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
     //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
     //processorChain.process(juce::dsp::ProcessContextReplacing<float>(inoutBlock));

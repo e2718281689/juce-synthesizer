@@ -2,6 +2,8 @@
 #include <math.h>
 #include "dense.h"
 #include "common.h"
+#include "util.h"
+#include "string.h"
 
 
 #define weights_size (DENSE_OUT_SIZE * DENSE_IN_SIZE)

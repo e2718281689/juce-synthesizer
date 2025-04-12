@@ -91,7 +91,6 @@ void cp_printMatrix(const Matrix* mat)
 
 void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiBuffer &)
 {
-    _ASSERTE( _CrtCheckMemory( ) );
 #if 1
     float *Data_L = buffer.getWritePointer(0);
     float *Data_R = buffer.getWritePointer(1);
@@ -149,5 +148,4 @@ void WaveNetProcessor::processBlock(juce::AudioSampleBuffer &buffer, juce::MidiB
     // std::cout << "cp_out" << std::endl;
     // std::cout << cp_out << std::endl;
 
-    // _ASSERTE( _CrtCheckMemory( ) );
 }

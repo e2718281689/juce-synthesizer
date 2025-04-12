@@ -89,6 +89,12 @@ juce_generate_juce_header(AudioPluginExample)
 # first argument, then a visibility parameter for the sources which should normally be PRIVATE.
 # Finally, we supply a list of source files that will be built into the target. This is a standard
 # CMake command.
+file(GLOB_RECURSE SRC_FILES
+        "./Effector/*.c"
+        "./Effector/*.cpp"
+)
+
+
 
 target_sources(AudioPluginExample
         PRIVATE
@@ -109,7 +115,9 @@ target_sources(AudioPluginExample
         ./Effector/cWaveNet/cWavenet_Layer.c
         ./Effector/cWaveNet/cActivation.c
         ./Effector/cWaveNet/cWavenet_layer_array.c
-        ./MIDI/ProcessorMidi.cpp)
+        ./MIDI/ProcessorMidi.cpp
+        ${SRC_FILES}
+)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use
