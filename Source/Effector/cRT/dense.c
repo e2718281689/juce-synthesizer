@@ -2,7 +2,6 @@
 #include <math.h>
 #include "dense.h"
 #include "common.h"
-#include "util.h"
 #include "string.h"
 
 
