@@ -100,21 +100,8 @@ target_sources(AudioPluginExample
         PRIVATE
         PluginEditor.cpp
         PluginProcessor.cpp
-        ./Effector/cRT/deeplearn.c
-        ./Effector/cRT/gru.c
-        ./Effector/cRT/dense.c
-        ./Effector/cRT/common.c
         ./Synth/SynthVoice.cpp
-        ./Effector/deeplearn/RTGru.cpp
-        ./Effector/deeplearn/WaveNet.cpp
         ./Maximilian/src/maximilian.cpp
-        ./Effector/cWaveNet/cWaveNet.c
-        ./Effector/cWaveNet/Matrix.c
-        ./Effector/cWaveNet/cConv1d.c
-        ./Effector/cWaveNet/cDenseT.c
-        ./Effector/cWaveNet/cWavenet_Layer.c
-        ./Effector/cWaveNet/cActivation.c
-        ./Effector/cWaveNet/cWavenet_layer_array.c
         ./MIDI/ProcessorMidi.cpp
         ${SRC_FILES}
 )

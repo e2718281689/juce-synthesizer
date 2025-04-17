@@ -23,6 +23,7 @@
 #include "Effector/deeplearn/RTGru.h"
 #include "Effector/deeplearn/WaveNet.h"
 #include "Effector/test.h"
+#include "Effector/overdrive/overdrive.h"
 
 //==============================================================================
 /**
@@ -103,6 +104,7 @@ private:
 
     Node::Ptr FilterNode;
     Node::Ptr RTGruNode;
+    Node::Ptr xxxNode;
 
     #if PERFETTO
     std::unique_ptr<perfetto::TracingSession> tracingSession;
