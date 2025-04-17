@@ -41,19 +41,29 @@ public:
     }
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
     {
-        // DigitDistortion1_Unit.enable =1;
-        // DigitDistortion1_Unit.ct = &DigitDistortion1Con_text;
-        // DigitDistortion1_Unit.mix =0;
-        // DigitDistortion1_Unit.low =0;
-        // DigitDistortion1_Unit.high =0;
-        // DigitDistortion1_Unit.gain = 0;
-        // DigitDistortion1_Unit.mode = 0;
-        // DigitDistortion1_Unit.sample_rate = sampleRate;
-        // AudioEffectDigitDistortion1Init(&DigitDistortion1_Unit,sampleRate);
+        DigitDistortion1_Unit.enable =1;
+        DigitDistortion1_Unit.ct = &DigitDistortion1Con_text;
+        DigitDistortion1_Unit.mix =1;
+        DigitDistortion1_Unit.low =1;
+        DigitDistortion1_Unit.high =1;
+        DigitDistortion1_Unit.gain = 3;
+        DigitDistortion1_Unit.mode = 1;
+        DigitDistortion1_Unit.sample_rate = sampleRate;
+        AudioEffectDigitDistortion1Init(&DigitDistortion1_Unit,sampleRate);
+        AudioEffectDigitDistortion1Configure(&DigitDistortion1_Unit,1,1,1,1,1);
     }
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
+        float *buff_R = buffer.getWritePointer(0);
+        float *buff_L = buffer.getWritePointer(1);
+        uint32_t num = buffer.getNumSamples();
+
+        AudioEffectDigitDistortion1Apply(&DigitDistortion1_Unit,buff_R,buff_R,num);
+        // AudioEffectDigitDistortion1Apply(&DigitDistortion1_Unit,buff_L,buff_L,num);
+        memcpy(buff_L, buff_R, num * sizeof(float));
+
+
 
     }
 
