@@ -52,6 +52,7 @@ namespace Gui
 
 			ChannelIndexComboBox.setBounds(0, Height - 20, 200, 20);
 
+
 		}
 
 		void comboBoxChanged(juce::ComboBox* comboBox) override
@@ -85,6 +86,12 @@ namespace Gui
 				return (tempIncomingBuffer.getSample(1, index) + tempIncomingBuffer.getSample(0, index)) * 0.5 ;
 			}
 		}
+		void PositionMap(Point<float> &point, size_t size)
+		{
+			point.y = juce::jmap<float>(point.y, -date_max, date_max, 0, Height-ChannelIndexComboBox.getHeight());
+			point.x = juce::jmap<float>(point.x, 0, size, 0, Width);
+
+		}
 		void generateWaveform()
 		{
 			
@@ -101,18 +108,23 @@ namespace Gui
 					//	tempIncomingBuffer.getReadPointer(0, 0),
 					//	size);
 					//pathProducer.generatePath(pathBuffer, getLocalBounds().toFloat());
-					float y_position = getShowDate(0);
-					float x_position = 0;
-					y_position = juce::jmap<float>(y_position, -date_max, date_max, 0, Height);
-					x_position = juce::jmap<float>(x_position, 0, size, 0, Width);
-					waveformPath.startNewSubPath(x_position, y_position);
+					Point<float> DrawPosition;
+					DrawPosition.y = getShowDate(0);
+					DrawPosition.x = 0;
+					PositionMap(DrawPosition,size);
+					waveformPath.startNewSubPath(DrawPosition);
+					// y_position = juce::jmap<float>(y_position, -date_max, date_max, 0, Height-ChannelIndexComboBox.getHeight());
+					// x_position = juce::jmap<float>(x_position, 0, size, 0, Width);
+					// waveformPath.startNewSubPath(x_position, y_position);
 					for (auto index = 1; index < size; ++index)
 					{
-						y_position = getShowDate(index);
-						x_position = index;
-						y_position = juce::jmap<float>(y_position, -date_max, date_max, 0, Height);
-						x_position = juce::jmap<float>(x_position, 0, size, 0, Width);
-						waveformPath.lineTo(x_position, y_position);
+						DrawPosition.y  = getShowDate(index);
+						DrawPosition.x = index;
+						// y_position = juce::jmap<float>(y_position, -date_max, date_max, 0, Height-ChannelIndexComboBox.getHeight());
+						// x_position = juce::jmap<float>(x_position, 0, size, 0, Width);
+						// waveformPath.lineTo(x_position, y_position);
+						PositionMap(DrawPosition,size);
+						waveformPath.lineTo(DrawPosition);
 					}
 					repaint();
 				}
