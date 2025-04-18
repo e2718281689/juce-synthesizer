@@ -22,13 +22,18 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     levelSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
     levelSlider.onValueChange = [this] { juce::Decibels::decibelsToGain((float)levelSlider.getValue()); };
 
-    xxxSlider.setRange(-72, 10);
-    xxxSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
 
-    Envlevel.setRange(-72, 10);
+    // gain
+    GainsliderLabel.setText("Gain", juce::dontSendNotification);
+    GainsliderLabel.attachToComponent(&GainSlider, true); // true 表示贴在左边
+    GainSlider.setRange(0.0, 10.0);
+    GainSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
+
+
+    Envlevel.setRange(0, 10);
     Envlevel.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     Envlevel.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
-    Envlevel.setValue(0.5f);
+    Envlevel.setValue(0.1f);
 
     EnvAttack.setSliderStyle(juce::Slider::LinearVertical);
     EnvDecay.setSliderStyle(juce::Slider::LinearVertical);
@@ -46,7 +51,7 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     SquareButton.setButtonText("Square");
     NoiseButton.setButtonText("Noise");
 
-    levelSliderButton.setButtonText("xxxSlider");
+    levelSliderButton.setButtonText("GainSlider");
     //EnvAttack.setSliderStyle(juce::Slider::LinearBarVertical);
     //EnvAttack.setRange(0.0, 127.0, 1.0);
     //EnvAttack.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
@@ -71,7 +76,10 @@ ScscAudioProcessorEditor::ScscAudioProcessorEditor (ScscAudioProcessor& p)
     addAndMakeVisible(EnvRelease);
 
     addAndMakeVisible(levelSlider);
-    addAndMakeVisible(xxxSlider);
+
+    addAndMakeVisible(GainsliderLabel);
+    addAndMakeVisible(GainSlider);
+
     addAndMakeVisible(AudioWave);
     addAndMakeVisible(EnvWave);
 
@@ -99,7 +107,7 @@ void ScscAudioProcessorEditor::paint (juce::Graphics& g)
 }
 void ScscAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
-    //juce::Logger::outputDebugString(juce::String(xxxSlider.getValue()));
+    //juce::Logger::outputDebugString(juce::String(GainSlider.getValue()));
 }
 void ScscAudioProcessorEditor::resized()
 {
@@ -107,7 +115,7 @@ void ScscAudioProcessorEditor::resized()
     // subcomponents in your editor..
     levelSlider.setBounds(100, 10, getWidth() - 110, 20);
 
-    xxxSlider.setBounds(100, 50, getWidth() - 110, 20);
+    GainSlider.setBounds(100, 50, getWidth() - 110, 20);
 
     SineButton.setBounds(220,100,70,40);
     SawButton.setBounds(220, 130, 70, 40);

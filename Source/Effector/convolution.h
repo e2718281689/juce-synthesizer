@@ -22,7 +22,7 @@ public:
     {
         Apvts = apvts;
         Apvts->addParameterListener("testslider", this);
-        Apvts->addParameterListener("xxxtestslider", this);
+        Apvts->addParameterListener("GainSlider", this);
         juce::Logger::outputDebugString("FilterProcessor");
 
         testslider_date = Apvts->getParameterAsValue("testslider").getValue();
@@ -33,7 +33,7 @@ public:
     ~ConvolutionProcessor()
     {
         Apvts->removeParameterListener("testslider", this);
-        Apvts->removeParameterListener("xxxtestslider", this);
+        Apvts->removeParameterListener("GainSlider", this);
 
     }
     void parameterChanged(const juce::String& parameterID, float newValue)
@@ -41,7 +41,7 @@ public:
         if (parameterID.equalsIgnoreCase("testslider"))
         {
         }
-        if (parameterID.equalsIgnoreCase("xxxtestslider"))
+        if (parameterID.equalsIgnoreCase("GainSlider"))
         {
         }
     }

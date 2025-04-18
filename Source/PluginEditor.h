@@ -40,7 +40,10 @@ private:
     ScscAudioProcessor& audioProcessor;
 
     DecibelSlider levelSlider;
-    juce::Slider  xxxSlider;
+
+    juce::Label   GainsliderLabel;
+    juce::Slider  GainSlider;
+
     juce::ToggleButton levelSliderButton;
 
     juce::Slider Envlevel;
@@ -62,7 +65,7 @@ private:
     Gui::EnvWaveform EnvWave;
 
     SliderVts sliderAttachment{ audioProcessor.apvts, "levelSlider", levelSlider };
-    SliderVts xxxsliderAttachment{ audioProcessor.apvts, "xxxtestslider", xxxSlider };
+    SliderVts xxxsliderAttachment{ audioProcessor.apvts, "GainSlider", GainSlider };
     SliderVts EnvAttackAttachment{ audioProcessor.apvts, "EnvAttack", EnvAttack };
     SliderVts EnvDecayAttachment{ audioProcessor.apvts, "EnvDecay", EnvDecay };
     SliderVts EnvSustainAttachment{ audioProcessor.apvts, "EnvSustain", EnvSustain };

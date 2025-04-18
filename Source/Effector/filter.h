@@ -20,7 +20,7 @@ public:
     {
         Apvts = apvts;
         Apvts->addParameterListener("testslider", this);
-        Apvts->addParameterListener("xxxtestslider", this);
+        Apvts->addParameterListener("GainSlider", this);
         juce::Logger::outputDebugString("FilterProcessor");
 
         testslider_date= Apvts->getParameterAsValue("testslider").getValue();
@@ -28,7 +28,7 @@ public:
     ~FilterProcessor()
     {
         Apvts->removeParameterListener("testslider", this);
-        Apvts->removeParameterListener("xxxtestslider", this);
+        Apvts->removeParameterListener("GainSlider", this);
 
     }
     void parameterChanged(const juce::String& parameterID, float newValue)
@@ -39,7 +39,7 @@ public:
             testslider_date = newValue;
             *filter.state = *juce::dsp::IIR::Coefficients<float>::makeHighPass(getSampleRate(), juce::jmap<float>(testslider_date, -72.0, 10, 10, 1000));
         }
-        if (parameterID.equalsIgnoreCase("xxxtestslider"))
+        if (parameterID.equalsIgnoreCase("GainSlider"))
         {
         }
     }
