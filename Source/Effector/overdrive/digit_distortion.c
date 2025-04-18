@@ -124,23 +124,23 @@ void DigitDistortion1_apply(DigitDistortion1Context* ct, float *pcm_in, float *p
 		float input = pcm_in[j];
 
 
-		float Hpout = processBiquadFilter(&ct->Hp , input);
+		// float Hpout = processBiquadFilter(&ct->Hp , input);
+		float Hpout = input;
 #if 1
-
 		float Pregainout = Hpout * gain * 18;
-
 
 		float Shapeout = 0;
 		if(mode == soft)
 		{
 			Shapeout = soft_clip(Pregainout) ;
-		}else if(mode == hard)
+		}
+		else if(mode == hard)
 		{
 			Shapeout = hard_clip(Pregainout) ;
 		}
-		Shapeout = Shapeout * mix + (1 - mix) * input;
-		float out = processBiquadFilter(&ct->Lp , Shapeout);
-
+		// Shapeout = Shapeout * mix + (1 - mix) * input;
+		// float out = processBiquadFilter(&ct->Lp , Shapeout);
+		float out = Shapeout;
 #endif
 
 		pcm_out[j] = out ;
