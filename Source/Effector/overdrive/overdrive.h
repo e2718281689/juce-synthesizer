@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include "../ProcessorBase.h"
-#include "DigitDistortion1.h"
+#include "digit_distortion.h"
 
 class overdrive : public ProcessorBase, public juce::AudioProcessorValueTreeState::Listener
 {
@@ -24,19 +24,19 @@ public:
     }
     ~overdrive()
     {
-        Apvts->removeParameterListener("levelSlider", this);
+        Apvts->removeParameterListener("GainSlider", this);
     }
     void init(juce::AudioProcessorValueTreeState *apvts) override
     {
         Apvts = apvts;
-        Apvts->addParameterListener("levelSlider", this);
+        Apvts->addParameterListener("GainSlider", this);
 
     }
     void parameterChanged(const juce::String& parameterID, float newValue)
     {
-        if (parameterID.equalsIgnoreCase("levelSlider"))
+        if (parameterID.equalsIgnoreCase("GainSlider"))
         {
-
+            AudioEffectDigitDistortion1Configure(&DigitDistortion1_Unit,0,1,1,newValue,1);
         }
     }
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -50,7 +50,7 @@ public:
         DigitDistortion1_Unit.mode = 1;
         DigitDistortion1_Unit.sample_rate = sampleRate;
         AudioEffectDigitDistortion1Init(&DigitDistortion1_Unit,sampleRate);
-        AudioEffectDigitDistortion1Configure(&DigitDistortion1_Unit,1,1,1,1,1);
+        AudioEffectDigitDistortion1Configure(&DigitDistortion1_Unit,0,1,1,3,1);
     }
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override

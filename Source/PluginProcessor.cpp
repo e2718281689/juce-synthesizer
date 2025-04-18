@@ -145,9 +145,11 @@ void ScscAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 
     AudioChain.AudioGroupInit();
     //FilterNode = AudioChain.addProcessorNode(std::make_unique < FilterProcessor > (&apvts));
-    xxxNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >());
+    // xxxNode = AudioChain.addProcessorNode(std::make_unique < RTGruProcessor >());
     RTGruNode = AudioChain.addProcessorNode(std::make_unique < overdrive >());
     RTGruNode = AudioChain.addProcessorNode(std::make_unique < GainProcessor >());
+
+
 
     // xxxNode = AudioChain.addProcessorNode(std::make_unique < overdrive >());
     // RTGruNode = AudioChain.addProcessorNode(std::make_unique < WaveNetProcessor >());
@@ -214,7 +216,7 @@ void ScscAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
         }
     }
 
-    buffer.clear();
+    // buffer.clear();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
     //auto inoutBlock = juce::dsp::AudioBlock<float>(buffer).getSubsetChannelBlock(0, (size_t)totalNumInputChannels);
@@ -261,9 +263,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
         1.0f));
 
     parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(
-        "xxxtestslider",
-        "xxxtestslider",
-        juce::NormalisableRange<float>(-72.0f, 10.0f, 0.01f),
+        "GainSlider",
+        "GainSlider",
+        juce::NormalisableRange<float>(0.0f, 10.0f, 0.01f),
         1.0f)); 
 
     parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(
@@ -293,9 +295,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout ScscAudioProcessor::CreatePa
     parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(
         "Envlevel",
         "Envlevel",
-        juce::NormalisableRange<float>(-72.0f, 10.0f, 0.01f),
+        juce::NormalisableRange<float>(0.0f, 10.0f, 0.01f),
         1.0f));
-
 
     parameterLayout.add(std::make_unique<juce::AudioParameterBool>(
         "SineButton",
