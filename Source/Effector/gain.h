@@ -28,6 +28,7 @@ public:
     {
         Apvts = apvts;
         Apvts->addParameterListener("levelSlider", this);
+        Gain_Level = Apvts->getParameterAsValue("levelSlider").getValue();
 
     }
     void parameterChanged(const juce::String& parameterID, float newValue)
