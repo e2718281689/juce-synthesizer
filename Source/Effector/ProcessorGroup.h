@@ -109,7 +109,12 @@ public:
 
         for (auto currentNode : Node) {
             if (previousNode!= nullptr) {
-                for (int channel = 0; channel < 2; ++channel)// stereo in ,channel < 2
+                /*
+                A "channel" is a mono channel, that is:
+                Stereo = 2 audio channels (usually channel 0 and channel 1)
+                5.1 channel = 6 audio channels (usually 0 ~ 5)
+                */
+                for (int channel = 0; channel < 2; ++channel)
                 {
                     juce::Logger::outputDebugString("previousNode=" + juce::String(previousNode->ProcessorName));
                     juce::Logger::outputDebugString("currentNode=" + juce::String(currentNode->ProcessorName));
